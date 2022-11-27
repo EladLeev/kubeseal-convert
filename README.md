@@ -1,6 +1,6 @@
 # kubeseal-convert [wip]
 
-The missing part of Sealed Secrets. :closed_lock_with_key:
+The missing part of [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets). :closed_lock_with_key:
 
 ## Motivation
 `kubeseal-convert` aims to reduce the friction of importing secrets from a pre-existing secrets management system (e.g. Vault, AWS Secrets Manager, etc) into a `SealedSecret`.  
@@ -60,6 +60,7 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 
 * Go version 1.19+
 * `make` command installed
+* `kubeseal` command installed, and a valid communication to the sealed secrets controller.
 
 ### Building Steps
 
