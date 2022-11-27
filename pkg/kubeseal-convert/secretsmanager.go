@@ -3,7 +3,6 @@ package kubesealconvert
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"log"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
