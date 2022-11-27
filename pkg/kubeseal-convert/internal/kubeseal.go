@@ -41,6 +41,10 @@ func Kubeseal(secret string) {
 	echoCmd.Wait()
 	w.Close()
 	cmdExec.Wait()
-	io.Copy(os.Stdout, &cmdBuffer)
+	
+	_, err := io.Copy(os.Stdout, &cmdBuffer)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 }
