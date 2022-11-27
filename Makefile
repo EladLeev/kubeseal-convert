@@ -1,7 +1,7 @@
 NAME=kubeseal-convert
 
 build:
-	GOARCH=amd64 GOOS=darwin go build -o ${NAME}-darwin main.go
+	GOARCH=amd64 GOOS=darwin go build -o ${NAME} main.go
 	GOARCH=amd64 GOOS=linux go build -o ${NAME}-linux main.go
 
 clean:
@@ -25,6 +25,11 @@ vet:
 	go vet
 
 # Too many dependencies on this one, won't work without installing each on of them manually first.
+# localstack https://github.com/localstack/localstack
+# awslocal https://github.com/localstack/awscli-local
+# minikube https://minikube.sigs.k8s.io/docs/start/
+# kubectx https://github.com/ahmetb/kubectx
+# Helm https://helm.sh/docs/intro/install/
 init-stack:
 	localstack start -d
 	minikube start
@@ -43,4 +48,4 @@ init-sealedsecrets:
 init-vault:
 	kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh
 
-init-dev:  init-stack init-secretmanager
+init-dev:  init-stack init-secretmanager init-sealedsecrets
