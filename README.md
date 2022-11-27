@@ -49,9 +49,9 @@ The `SealedSecret` will be printed to `STDOUT`.
 
 
 ## Supported SM Systems
-:white_check_mark: AWS Secrets Manager
-:hourglass_flowing_sand: Vault (wip)
-:question: Google Secrets Manager
+:white_check_mark: AWS Secrets Manager  
+:hourglass_flowing_sand: Vault (wip)  
+:question: Google Secrets Manager  
 :question: Azure Key Vault
 
 ## Build from source
