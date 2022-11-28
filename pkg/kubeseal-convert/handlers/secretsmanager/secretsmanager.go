@@ -1,4 +1,4 @@
-package kubesealconvert
+package secretsmanager
 
 import (
 	"context"
@@ -8,8 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
-	internal "github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/internal"
-	"github.com/spf13/cobra"
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
 
 // TODO: Implement proper context
@@ -36,16 +35,15 @@ func getSecret(svc *secretsmanager.Client, secretName string) map[string]interfa
 	return mp
 }
 
-// Secretsmanager implements AWS SecretsManager logic to retrieve secrets and build the secretData struct
-func Secretsmanager(secretName string, cmd *cobra.Command) (secretData internal.SecretValues) {
+type SecretsManagerImp struct {
+}
+
+func New() interfaces.SecretsManager {
+	return &SecretsManagerImp{}
+}
+
+func (*SecretsManagerImp) GetSecret(secretName string) map[string]interface{} {
 	cfg := createConfig()
 	svc := secretsmanager.NewFromConfig(cfg)
-
-	secretData.Name = ParseStringFlag(cmd, "name")           // ->
-	secretData.Namespace = ParseStringFlag(cmd, "namespace") // ->
-	secretData.Labels = ParseLabels(cmd)                     // ->
-	secretData.Annotations = ParseAnnotations(cmd)           // ->
-	secretData.Data = getSecret(svc, secretName)
-
-	return secretData
+	return getSecret(svc, secretName)
 }

@@ -1,11 +1,8 @@
-// kubesealconvert package provides common public utilities to assist bulding Sealed Secrets data
-package kubesealconvert
+package cmd
 
 import (
-	"encoding/json"
 	"fmt"
 
-	internal "github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/internal"
 	"github.com/spf13/cobra"
 )
 
@@ -40,15 +37,4 @@ func ParseLabels(cmd *cobra.Command) map[string]string {
 	}
 
 	return labels
-}
-
-// BuildSecretFile generates a Sealed Secrets
-func BuildSecretFile(secretValues internal.SecretValues) {
-	rawSecret := internal.BuildSecret(secretValues)
-	output, e := json.Marshal(&rawSecret)
-	if e != nil {
-		fmt.Printf("Unable to marshal secret: %v", e)
-	}
-
-	internal.Kubeseal(string(output))
 }

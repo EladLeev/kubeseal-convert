@@ -1,6 +1,8 @@
-package kubesealconvert
+package domain
 
 // SecretValues struct defines the basic structure of a secret.
+// Name => The secret name
+// Namespace => The namespace name
 // Data => The raw data of the secret
 // Annotations => The k8s annotations provided by the user to be included
 // Labels => The k8s lables provided by the user to be included

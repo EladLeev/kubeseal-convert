@@ -3,11 +3,12 @@ package kubesealconvert
 import (
 	"fmt"
 
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/domain"
 	coreV1 "k8s.io/api/core/v1"
 )
 
 // buildDataBytes merges the SecretValues.Data into the new k8s raw secret
-func buildDataBytes(secretSpec coreV1.Secret, sv SecretValues) map[string][]byte {
+func buildDataBytes(secretSpec coreV1.Secret, sv domain.SecretValues) map[string][]byte {
 	data := make(map[string][]byte)
 
 	for k, v := range sv.Data {
@@ -21,7 +22,7 @@ func buildDataBytes(secretSpec coreV1.Secret, sv SecretValues) map[string][]byte
 }
 
 // BuildSecret gets the SecretValues struct and returns a raw k8s secret
-func BuildSecret(sv SecretValues) coreV1.Secret {
+func buildSecret(sv domain.SecretValues) coreV1.Secret {
 	var secretSpec coreV1.Secret
 
 	secretSpec.Name = sv.Name

@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	kubesealconvert "github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert"
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/domain"
 	"github.com/spf13/cobra"
 )
 
@@ -11,11 +11,14 @@ var secretsmanagerCmd = &cobra.Command{
 	Short:   "Convert AWS Secrets-Manager secrets",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-		secretData := kubesealconvert.Secretsmanager(args[0], cmd)
-
-		// Build Sealed Secrets using AWS Secrets Manager data
-		kubesealconvert.BuildSecretFile(secretData)
-
+		secretVal := domain.SecretValues{
+			Data:        SecretsManager.GetSecret(args[0]),
+			Name:        ParseStringFlag(cmd, "name"),
+			Namespace:   ParseStringFlag(cmd, "namespace"),
+			Labels:      ParseLabels(cmd),
+			Annotations: ParseAnnotations(cmd),
+		}
+		KubeSeal.BuildSecretFile(secretVal)
 	},
 }
 
