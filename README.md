@@ -1,4 +1,6 @@
 # kubeseal-convert [wip]
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/EladLeev/kubeseal-convert/Build%20Package)
+[![Go Report Card](https://goreportcard.com/badge/github.com/eladleev/kubeseal-convert)](https://goreportcard.com/report/github.com/eladleev/kubeseal-convert)
 
 The missing part of [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets). :closed_lock_with_key:
 
