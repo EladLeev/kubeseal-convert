@@ -8,6 +8,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
 
 // TODO: Implement proper context
@@ -34,7 +35,14 @@ func getSecret(svc *secretsmanager.Client, secretName string) map[string]interfa
 	return mp
 }
 
-func Secretsmanager(secretName string) map[string]interface{} {
+type SecretsManagerImp struct {
+}
+
+func New() interfaces.SecretsManager {
+	return &SecretsManagerImp{}
+}
+
+func (*SecretsManagerImp) GetSecret(secretName string) map[string]interface{} {
 	cfg := createConfig()
 	svc := secretsmanager.NewFromConfig(cfg)
 	return getSecret(svc, secretName)

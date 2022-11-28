@@ -53,4 +53,4 @@ init-vault:
 init-dev:  init-stack init-secretmanager init-sealedsecrets
 
 buildmocks:
-	mockery --all --dir "./app/"
+	mockery --all --dir "./pkg/"

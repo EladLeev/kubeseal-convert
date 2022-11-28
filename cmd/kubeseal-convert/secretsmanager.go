@@ -11,9 +11,8 @@ var secretsmanagerCmd = &cobra.Command{
 	Short:   "Convert AWS Secrets-Manager secrets",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
-
 		secretVal := domain.SecretValues{
-			// Data:        secretsmanager.Secretsmanager(args[0]),
+			Data:        SecretsManager.GetSecret(args[0]),
 			Name:        ParseStringFlag(cmd, "name"),
 			Namespace:   ParseStringFlag(cmd, "namespace"),
 			Labels:      ParseLabels(cmd),
