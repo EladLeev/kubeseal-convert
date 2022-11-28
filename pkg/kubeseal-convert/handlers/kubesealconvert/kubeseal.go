@@ -20,7 +20,7 @@ func New() interfaces.KubeSeal {
 	return &KubesealImpl{}
 }
 
-// Kubeseal gets a raw k8s secret as a string, and run the kubeseal command
+// Seal gets a raw k8s secret as a string, and run the kubeseal command
 func (*KubesealImpl) Seal(secret string) {
 	kubesealBinary, e := exec.LookPath("kubeseal")
 	if e != nil {

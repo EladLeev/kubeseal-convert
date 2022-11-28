@@ -1,4 +1,3 @@
-// kubesealconvert package provides common public utilities to assist bulding Sealed Secrets data
 package cmd
 
 import (
