@@ -2,16 +2,26 @@ package kubesealconvert
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"os"
 	"os/exec"
+
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/domain"
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
 
-var cmdBuffer bytes.Buffer
+type KubesealImpl struct {
+}
+
+func New() interfaces.KubeSeal {
+	return &KubesealImpl{}
+}
 
 // Kubeseal gets a raw k8s secret as a string, and run the kubeseal command
-func Kubeseal(secret string) {
+func (*KubesealImpl) Seal(secret string) {
 	kubesealBinary, e := exec.LookPath("kubeseal")
 	if e != nil {
 		log.Fatalf("Unable to find kubeseal command: %v", e)
@@ -30,7 +40,7 @@ func Kubeseal(secret string) {
 		Stdout: os.Stdout,
 		Stderr: os.Stdout,
 	}
-
+	var cmdBuffer bytes.Buffer
 	r, w := io.Pipe()
 	echoCmd.Stdout = w
 	cmdExec.Stdin = r
@@ -41,10 +51,19 @@ func Kubeseal(secret string) {
 	echoCmd.Wait()
 	w.Close()
 	cmdExec.Wait()
-	
+
 	_, err := io.Copy(os.Stdout, &cmdBuffer)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
 
+// BuildSecretFile generates a Sealed Secrets
+func (impl *KubesealImpl) BuildSecretFile(secretValues domain.SecretValues) {
+	rawSecret := buildSecret(secretValues)
+	output, e := json.Marshal(&rawSecret)
+	if e != nil {
+		fmt.Printf("Unable to marshal secret: %v", e)
+	}
+	impl.Seal(string(output))
 }

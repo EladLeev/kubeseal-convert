@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/kubesealconvert"
 	"github.com/spf13/cobra"
 )
 
@@ -21,6 +22,7 @@ var (
 
 		},
 	}
+	KubeSeal = kubesealconvert.New()
 )
 
 func Execute() {

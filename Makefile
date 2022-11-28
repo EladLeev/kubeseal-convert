@@ -1,3 +1,5 @@
+SHELL := /bin/bash
+export GOBIN := $(CWD)/.bin
 NAME=kubeseal-convert
 
 build:
@@ -49,3 +51,6 @@ init-vault:
 	kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh
 
 init-dev:  init-stack init-secretmanager init-sealedsecrets
+
+buildmocks:
+	mockery --all --dir "./app/"
