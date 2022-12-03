@@ -24,6 +24,8 @@ Table of Contents
   - [Flags \& Options](#flags--options)
     - [Flags](#flags)
   - [Supported SM Systems](#supported-sm-systems)
+    - [AWS Secrets Manager](#aws-secrets-manager)
+    - [Hashicorp Vault](#hashicorp-vault)
   - [Build from source](#build-from-source)
     - [Prerequisites](#prerequisites)
     - [Building Steps](#building-steps)
@@ -52,9 +54,15 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 
 ## Supported SM Systems
 :white_check_mark: AWS Secrets Manager  
-:hourglass_flowing_sand: Vault (wip)  
+:white_check_mark: Hashicorp Vault  
 :question: Google Secrets Manager  
 :question: Azure Key Vault
+
+### AWS Secrets Manager
+The AWS client rely on AWS local configuration variables - config file, environment variables, etc.
+### Hashicorp Vault
+In order to work with the Vault provider, two environment variables needs to be set - `VAULT_TOKEN` and `VAULT_ADDR`.  
+Currently, only [`kv-v2`](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) is supported.
 
 ## Build from source
 

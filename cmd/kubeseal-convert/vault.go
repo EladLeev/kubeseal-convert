@@ -5,14 +5,14 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var secretsmanagerCmd = &cobra.Command{
-	Use:     "secretsmanager",
-	Aliases: []string{"sm", "secretsmanager", "aws", "aws-secret"},
-	Short:   "Convert AWS Secrets-Manager secrets",
+var vaultCmd = &cobra.Command{
+	Use:     "vault",
+	Aliases: []string{"vlt", "vault"},
+	Short:   "Convert Hashicorp Vault secrets",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		secretVal := domain.SecretValues{
-			Data:        SecretsManager.GetSecret(args[0]),
+			Data:        Vault.GetSecret(args[0]),
 			Name:        ParseStringFlag(cmd, "name"),
 			Namespace:   ParseStringFlag(cmd, "namespace"),
 			Labels:      ParseLabels(cmd),
@@ -23,5 +23,5 @@ var secretsmanagerCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(secretsmanagerCmd)
+	rootCmd.AddCommand(vaultCmd)
 }

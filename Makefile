@@ -37,7 +37,7 @@ init-stack:
 	minikube start
 	kubectx minikube
 
-init-secretmanager:
+init-secretsmanager:
 	localstack status services --format json | jq -r .secretsmanager
 	awslocal secretsmanager create-secret --name MyTestSecret --description "This is a test" --secret-string "{\"user\":\"Dwight_Schrute\",\"password\":\"beet4life\"}"
 	awslocal secretsmanager list-secrets
@@ -50,7 +50,7 @@ init-sealedsecrets:
 init-vault:
 	kubectl exec --stdin=true --tty=true vault-0 -- /bin/sh
 
-init-dev:  init-stack init-secretmanager init-sealedsecrets
+init-dev:  init-stack init-secretsmanager init-sealedsecrets
 
 buildmocks:
 	mockery --all --dir "./pkg/"
