@@ -1,4 +1,4 @@
-# kubeseal-convert [wip]
+# kubeseal-convert
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/EladLeev/kubeseal-convert/Build%20Package)
 [![Go Report Card](https://goreportcard.com/badge/github.com/eladleev/kubeseal-convert)](https://goreportcard.com/report/github.com/eladleev/kubeseal-convert)
 
