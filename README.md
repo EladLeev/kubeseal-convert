@@ -18,7 +18,7 @@ Just run `kubeseal-convert` with the secret path.
 Table of Contents
 -----------------
 
-- [kubeseal-convert \[wip\]](#kubeseal-convert-wip)
+- [kubeseal-convert](#kubeseal-convert)
   - [Motivation](#motivation)
   - [Table of Contents](#table-of-contents)
   - [Flags \& Options](#flags--options)
