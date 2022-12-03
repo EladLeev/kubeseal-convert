@@ -3,6 +3,7 @@ module github.com/eladleev/kubeseal-convert
 go 1.19
 
 require (
+	github.com/hashicorp/vault/api v1.8.2
 	github.com/spf13/cobra v1.6.1
 	github.com/stretchr/testify v1.8.1
 	gotest.tools v2.2.0+incompatible
@@ -46,7 +47,6 @@ require (
 	github.com/hashicorp/go-version v1.2.0 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/hashicorp/vault/api v1.8.2 // indirect
 	github.com/hashicorp/vault/sdk v0.6.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20180604194846-3520598351bb // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
