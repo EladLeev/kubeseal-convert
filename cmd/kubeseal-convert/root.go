@@ -6,6 +6,7 @@ import (
 
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/kubesealconvert"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/secretsmanager"
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/vault"
 	"github.com/spf13/cobra"
 )
 
@@ -25,6 +26,7 @@ var (
 	}
 	KubeSeal       = kubesealconvert.New()
 	SecretsManager = secretsmanager.New()
+	Vault          = vault.New()
 )
 
 func Execute() {
