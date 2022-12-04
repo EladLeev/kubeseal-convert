@@ -44,7 +44,7 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 | Name                  | Description                                                            | Require | Type       |
 | --------------------- | ---------------------------------------------------------------------- | ------- | ---------- |
 | `-n`, `--name`        | The Sealed Secret name.                                                | `V`     | `string`   |
-| `namespace`           | The Sealed Secret namespace. If not specified, taken from k8s context. |         | `string`   |
+| `--namespace`         | The Sealed Secret namespace. If not specified, taken from k8s context. |         | `string`   |
 | `-a`, `--annotations` | Sets k8s annotations. KV pairs, comma separated.                       |         | `[]string` |
 | `-l`, `--labels`      | Sets k8s lables. KV pairs, comma separated.                            |         | `[]string` |
 |                       |                                                                        |         |            |
