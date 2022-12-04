@@ -5,7 +5,7 @@
 The missing part of [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets). :closed_lock_with_key:
 
 ## Motivation
-`kubeseal-convert` aims to reduce the friction of importing secrets from a pre-existing secrets management system (e.g. Vault, AWS Secrets Manager, etc) into a `SealedSecret`.  
+`kubeseal-convert` aims to reduce the friction of importing secrets from a pre-existing secret management systems (e.g. Vault, AWS Secrets Manager, etc) into a `SealedSecret`.  
 Instaed of:
 1. Going into AWS Secret Manager
 2. Retrieve the secret who needs to be migrated
@@ -41,15 +41,15 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 ./kubeseal-convert <SECRETS_STORE> <PATH> --namespace <NS_NAME> --name <SECRET_NAME>
 ```
 ### Flags
-| Name                    | Description                                                            | Require | Type       |
-| ----------------------- | ---------------------------------------------------------------------- | ------- | ---------- |
-| `-n`, `--name`          | The Sealed Secret name.                                                | `V`     | `string`   |
-| `namespace`             | The Sealed Secret namespace. If not specified, taken from k8s context. |         | `string`   |
-| `-a`, `--annotations`   | Sets k8s annotations. KV pairs, comma separated.                       |         | `[]string` |
-| `-l`, `--labels`        | Sets k8s lables. KV pairs, comma separated.                            |         | `[]string` |
-|                         |                                                                        |         |            |
-| `-h`, `--help`          | Display help.                                                          |         | `none`     |
-| `-v`, `--version`       | Display version.                                                       |         | `none`     |
+| Name                  | Description                                                            | Require | Type       |
+| --------------------- | ---------------------------------------------------------------------- | ------- | ---------- |
+| `-n`, `--name`        | The Sealed Secret name.                                                | `V`     | `string`   |
+| `namespace`           | The Sealed Secret namespace. If not specified, taken from k8s context. |         | `string`   |
+| `-a`, `--annotations` | Sets k8s annotations. KV pairs, comma separated.                       |         | `[]string` |
+| `-l`, `--labels`      | Sets k8s lables. KV pairs, comma separated.                            |         | `[]string` |
+|                       |                                                                        |         |            |
+| `-h`, `--help`        | Display help.                                                          |         | `none`     |
+| `-v`, `--version`     | Display version.                                                       |         | `none`     |
 
 
 ## Supported SM Systems
@@ -90,8 +90,18 @@ make init-dev
 
 ## Examples
 ```bash
-./kubeseal-convert sm MyTestSecret --namespace test-ns --name test-secret --annotations converted-by=kubeseal-convert,env=dev --labels test=abc
+./kubeseal-convert sm MyTestSecret --namespace test-ns --name test-secret --annotations converted-by=kubeseal-convert,env=dev --labels test=abc > secret.yaml
 ```
+or
+```bash
+./kubeseal-convert vlt "mydomain/data/MyTestSecret" --namespace test-ns --name test-secret --annotations converted-by=kubeseal-convert,src=vault --labels test=abc > secret.yaml
+```
+This will:  
+1. Retrieve a secret called `MyTestSecret` from AWS Secrets Manager / Hashicorp Vault
+2. Create it on `test-ns` namespace
+3. Call it `test-secret`
+4. Add few annotations and labels
+5. Save it as `secret.yaml` to be push to the repo safely
 
 ## Contributing
 
