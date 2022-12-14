@@ -37,7 +37,7 @@ Table of Contents
 Same as the `kubeseal` command, `kubeseal-convert` is un-opinionated. It won't commit the secret to Git, apply it to the cluster, or save it on a specific path.  
 The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of CI, or as part of a Job.
 
-```bash
+```shell
 ./kubeseal-convert <SECRETS_STORE> <PATH> --namespace <NS_NAME> --name <SECRET_NAME>
 ```
 ### Flags
@@ -75,25 +75,52 @@ Currently, only [`kv-v2`](https://developer.hashicorp.com/vault/docs/secrets/kv/
 ### Building Steps
 
 1. Clone this repository
-```bash
+```shell
 git clone https://github.com/EladLeev/kubeseal-convert && cd kubeseal-convert
 ```
 2. Build using Makefile
-```bash
+```shell
 make build
 ```
+This command will generate binaries for Mac (aka Darwin), Linux and Windows platforms:
+```shell
+./out/
+├── darwin
+│   ├── amd64
+│   │   └── kubeseal-convert
+│   └── arm64
+│       └── kubeseal-convert
+├── linux
+│   ├── amd64
+│   │   └── kubeseal-convert
+│   └── arm64
+│       └── kubeseal-convert
+└── windows
+    ├── amd64
+    │   └── kubeseal-convert
+    └── arm64
+        └── kubeseal-convert
+```
+In order to build a specific platform run one of these commands:
+```shell
+make build-darwin
+make build-linux
+make build-windows
+```
+
+
 3. **[optional]** Set up local env for testing
-```bash
+```shell
 make init-dev
 ```
 4. **[optional]** Run the [example](#examples)
 
 ## Examples
-```bash
+```shell
 ./kubeseal-convert sm MyTestSecret --namespace test-ns --name test-secret --annotations converted-by=kubeseal-convert,env=dev --labels test=abc > secret.yaml
 ```
 or
-```bash
+```shell
 ./kubeseal-convert vlt "mydomain/data/MyTestSecret" --namespace test-ns --name test-secret --annotations converted-by=kubeseal-convert,src=vault --labels test=abc > secret.yaml
 ```
 This will:  

@@ -56,19 +56,19 @@ buildmocks:
 	mockery --all --dir "./pkg/"
 
 # Build
-build-all: build-linux build-darwin build-windows
+build: build-linux build-darwin build-windows
 
-build:
+build-os:
 	CGO_ENABLED=0 GOOS=${OS} GOARCH=${ARCH} go build  -ldflags="-X '${GO_MODULE}/cmd/kubeseal-convert.version=${VERSION}' -w -extldflags '-static'" -o out/${OS}/${ARCH}/${NAME}  ./main.go
 
 build-darwin:
-	OS=darwin ARCH=amd64 make build
-	OS=darwin ARCH=arm64 make build
+	OS=darwin ARCH=amd64 make build-os
+	OS=darwin ARCH=arm64 make build-os
 
 build-linux:
-	OS=linux ARCH=amd64 make build
-	OS=linux ARCH=arm64 make build
+	OS=linux ARCH=amd64 make build-os
+	OS=linux ARCH=arm64 make build-os
 
 build-windows:
-	OS=windows ARCH=amd64 make build
-	OS=windows ARCH=arm64 make build
+	OS=windows ARCH=amd64 make build-os
+	OS=windows ARCH=arm64 make build-os
