@@ -55,7 +55,7 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 ## Supported SM Systems
 :white_check_mark: AWS Secrets Manager  
 :white_check_mark: Hashicorp Vault
-:white_check_mark: Azure Key Vault  
+:white_check_mark: Azure Key Vault - contributed by @kroonprins
 :question: Google Secrets Manager  
 
 ### AWS Secrets Manager
@@ -64,7 +64,7 @@ The AWS client rely on AWS local configuration variables - config file, environm
 In order to work with the Vault provider, two environment variables needs to be set - `VAULT_TOKEN` and `VAULT_ADDR`.  
 Currently, only [`kv-v2`](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) is supported.
 ### Azure Key Vault
-In order to work with the Azure Key Vault provider, the following environment variable needs to be set - `AZURE_KEY_VAULT_URI`. This variable should contain the vault uri in the format `https://[name].vault.azure.net` where `[name]` is the vault name.
+The `<SECRETS_STORE>` should contain the vault name from the vault full uri `https://<SECRETS_STORE>.vault.azure.net`.
 Authentication to the vault happens either via environment variables, managed identity, or via the az cli (`az login`).
 
 ## Build from source

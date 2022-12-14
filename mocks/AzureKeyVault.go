@@ -9,13 +9,13 @@ type AzureKeyVault struct {
 	mock.Mock
 }
 
-// GetSecret provides a mock function with given fields: secretName
-func (_m *AzureKeyVault) GetSecret(secretName string) map[string]interface{} {
-	ret := _m.Called(secretName)
+// GetSecrets provides a mock function with given fields: vaultName
+func (_m *AzureKeyVault) GetSecrets(vaultName string) map[string]interface{} {
+	ret := _m.Called(vaultName)
 
 	var r0 map[string]interface{}
 	if rf, ok := ret.Get(0).(func(string) map[string]interface{}); ok {
-		r0 = rf(secretName)
+		r0 = rf(vaultName)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(map[string]interface{})

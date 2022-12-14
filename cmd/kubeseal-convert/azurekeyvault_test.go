@@ -19,7 +19,7 @@ func TestAzureKeyVaultCmd(t *testing.T) {
 
 	// mock azurekeyvault
 	mockAzureKeyVault := mocks.NewAzureKeyVault(t)
-	mockAzureKeyVault.On("GetSecret", mock.Anything).Return(map[string]interface{}{
+	mockAzureKeyVault.On("GetSecrets", mock.Anything).Return(map[string]interface{}{
 		"key": "value",
 	})
 	AzureKeyVault = mockAzureKeyVault

@@ -1,5 +1,5 @@
 package interfaces
 
 type AzureKeyVault interface {
-	GetSecret(secretName string) map[string]interface{}
+	GetSecrets(vaultName string) map[string]interface{}
 }

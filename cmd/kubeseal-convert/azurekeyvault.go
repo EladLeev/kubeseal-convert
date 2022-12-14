@@ -6,13 +6,13 @@ import (
 )
 
 var azureKeyVaultCmd = &cobra.Command{
-	Use:     "az",
-	Aliases: []string{"azurekeyvault", "azure-key-vault", "azure"},
+	Use:     "akv",
+	Aliases: []string{"azurekeyvault", "azure-key-vault", "az", "azure"},
 	Short:   "Convert Azure Key Vault secrets",
 	Args:    cobra.ExactArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
 		secretVal := domain.SecretValues{
-			Data:        AzureKeyVault.GetSecret(args[0]),
+			Data:        AzureKeyVault.GetSecrets(args[0]),
 			Name:        ParseStringFlag(cmd, "name"),
 			Namespace:   ParseStringFlag(cmd, "namespace"),
 			Labels:      ParseLabels(cmd),
