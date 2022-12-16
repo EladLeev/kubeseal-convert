@@ -1,5 +1,5 @@
 # kubeseal-convert
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/EladLeev/kubeseal-convert/Build%20Package)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/EladLeev/kubeseal-convert/build.yml?branch=main)
 [![Go Report Card](https://goreportcard.com/badge/github.com/eladleev/kubeseal-convert)](https://goreportcard.com/report/github.com/eladleev/kubeseal-convert)
 
 The missing part of [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets). :closed_lock_with_key:
@@ -54,8 +54,8 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 
 ## Supported SM Systems
 :white_check_mark: AWS Secrets Manager  
-:white_check_mark: Hashicorp Vault
-:white_check_mark: Azure Key Vault - contributed by @kroonprins
+:white_check_mark: Hashicorp Vault  
+:white_check_mark: Azure Key Vault - Contributed by @kroonprins  
 :question: Google Secrets Manager  
 
 ### AWS Secrets Manager
