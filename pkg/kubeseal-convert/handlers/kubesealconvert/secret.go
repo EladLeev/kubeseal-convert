@@ -14,7 +14,7 @@ func buildDataBytes(secretSpec coreV1.Secret, sv domain.SecretValues) map[string
 	for k, v := range sv.Data {
 		str, ok := v.(string)
 		if !ok {
-			fmt.Print("Oops, unexpected field value. Unable to decode secret value to string.")
+			fmt.Println("Oops, unexpected field value. Unable to decode secret value to string.")
 		}
 		data[k] = []byte(str)
 	}
