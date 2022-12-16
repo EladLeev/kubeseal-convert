@@ -26,6 +26,7 @@ Table of Contents
   - [Supported SM Systems](#supported-sm-systems)
     - [AWS Secrets Manager](#aws-secrets-manager)
     - [Hashicorp Vault](#hashicorp-vault)
+    - [Azure Key Vault](#azure-key-vault)
   - [Build from source](#build-from-source)
     - [Prerequisites](#prerequisites)
     - [Building Steps](#building-steps)
