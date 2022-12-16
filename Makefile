@@ -3,7 +3,7 @@ export GOBIN := $(CWD)/.bin
 NAME=kubeseal-convert
 
 build:
-	GOARCH=amd64 GOOS=darwin go build -o ${NAME} main.go
+	GOARCH=amd64 GOOS=darwin go build -o ${NAME}-darwin main.go
 	GOARCH=amd64 GOOS=linux go build -o ${NAME}-linux main.go
 
 clean:
