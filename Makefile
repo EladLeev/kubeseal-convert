@@ -1,5 +1,6 @@
 SHELL := /bin/bash
 export GOBIN := $(CWD)/.bin
+
 NAME := kubeseal-convert
 VERSION := "0.0.2"
 GO_MODULE := github.com/eladleev/kubeseal-convert

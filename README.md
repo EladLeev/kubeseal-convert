@@ -1,5 +1,5 @@
 # kubeseal-convert
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/EladLeev/kubeseal-convert/Build%20Package)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/EladLeev/kubeseal-convert/build.yml?branch=main)
 [![Go Report Card](https://goreportcard.com/badge/github.com/eladleev/kubeseal-convert)](https://goreportcard.com/report/github.com/eladleev/kubeseal-convert)
 
 The missing part of [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets). :closed_lock_with_key:
@@ -26,6 +26,7 @@ Table of Contents
   - [Supported SM Systems](#supported-sm-systems)
     - [AWS Secrets Manager](#aws-secrets-manager)
     - [Hashicorp Vault](#hashicorp-vault)
+    - [Azure Key Vault](#azure-key-vault)
   - [Build from source](#build-from-source)
     - [Prerequisites](#prerequisites)
     - [Building Steps](#building-steps)
@@ -55,14 +56,17 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 ## Supported SM Systems
 :white_check_mark: AWS Secrets Manager  
 :white_check_mark: Hashicorp Vault  
+:white_check_mark: Azure Key Vault - Contributed by @kroonprins  
 :question: Google Secrets Manager  
-:question: Azure Key Vault
 
 ### AWS Secrets Manager
 The AWS client rely on AWS local configuration variables - config file, environment variables, etc.
 ### Hashicorp Vault
 In order to work with the Vault provider, two environment variables needs to be set - `VAULT_TOKEN` and `VAULT_ADDR`.  
 Currently, only [`kv-v2`](https://developer.hashicorp.com/vault/docs/secrets/kv/kv-v2) is supported.
+### Azure Key Vault
+The `<SECRETS_STORE>` should contain the vault name from the vault full uri `https://<SECRETS_STORE>.vault.azure.net`.
+Authentication to the vault happens either via environment variables, managed identity, or via the az cli (`az login`).
 
 ## Build from source
 

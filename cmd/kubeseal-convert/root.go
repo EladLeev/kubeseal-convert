@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/azurekeyvault"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/kubesealconvert"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/secretsmanager"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/vault"
@@ -26,6 +27,7 @@ var (
 	KubeSeal       = kubesealconvert.New()
 	SecretsManager = secretsmanager.New()
 	Vault          = vault.New()
+	AzureKeyVault  = azurekeyvault.New()
 )
 
 func Execute() {
