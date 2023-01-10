@@ -16,3 +16,6 @@
 
 # Ignore goreleaser output
 dist/
+
+# build artefacts
+out/
