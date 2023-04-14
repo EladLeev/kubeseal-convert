@@ -12,3 +12,4 @@ Check out [Vault implementation](https://github.com/EladLeev/kubeseal-convert/pu
 
 ## Contributors List
 👏 @Pavel-Durov
+👏 @kroonprins
