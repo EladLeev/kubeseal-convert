@@ -1,11 +1,12 @@
 SHELL := /bin/bash
 export GOBIN := $(CWD)/.bin
-NAME=kubeseal-convert
 
-build:
-	GOARCH=amd64 GOOS=darwin go build -o ${NAME}-darwin main.go
-	GOARCH=amd64 GOOS=linux go build -o ${NAME}-linux main.go
+NAME := kubeseal-convert
+VERSION := "0.0.2"
+GO_MODULE := github.com/eladleev/kubeseal-convert
 
+run:
+	go run main.go 
 clean:
 	go clean
 	rm ${NAME}-darwin
@@ -54,3 +55,21 @@ init-dev:  init-stack init-secretsmanager init-sealedsecrets
 
 buildmocks:
 	mockery --all --dir "./pkg/"
+
+# Build
+build: build-linux build-darwin build-windows
+
+build-os:
+	CGO_ENABLED=0 GOOS=${OS} GOARCH=${ARCH} go build  -ldflags="-X '${GO_MODULE}/cmd/kubeseal-convert.version=${VERSION}' -w -extldflags '-static'" -o out/${OS}/${ARCH}/${NAME}  ./main.go
+
+build-darwin:
+	OS=darwin ARCH=amd64 make build-os
+	OS=darwin ARCH=arm64 make build-os
+
+build-linux:
+	OS=linux ARCH=amd64 make build-os
+	OS=linux ARCH=arm64 make build-os
+
+build-windows:
+	OS=windows ARCH=amd64 make build-os
+	OS=windows ARCH=arm64 make build-os
