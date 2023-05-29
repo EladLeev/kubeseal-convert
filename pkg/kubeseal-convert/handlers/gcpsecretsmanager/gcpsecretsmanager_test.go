@@ -7,6 +7,8 @@ import (
 )
 
 func Test_buildSecretId(t *testing.T) {
+	t.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "../../../../test/testdata/mock_gcp_creds.json")
+
 	ctx := context.TODO()
 	secretName := "projects/my-project/secrets/my-secret/versions/1"
 	expectedResult := secretName
