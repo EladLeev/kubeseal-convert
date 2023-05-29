@@ -2,8 +2,6 @@ SHELL := /bin/bash
 export GOBIN := $(CWD)/.bin
 NAME=kubeseal-convert
 
-# GCP tests dependencies
-export GOOGLE_APPLICATION_CREDENTIALS := $(PWD)/test/testdata/mock_gcp_creds.json
 
 .PHONY: build
 build:
@@ -18,6 +16,7 @@ clean:
 
 .PHONY: test
 test:
+	export GOOGLE_APPLICATION_CREDENTIALS=$(PWD)/test/testdata/mock_gcp_creds.json && \
 	go test -v ./...
 
 .PHONY: test_coverage
