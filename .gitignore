@@ -16,3 +16,6 @@
 
 # Ignore goreleaser output
 dist/
+
+# Ignore idea directory
+.idea/

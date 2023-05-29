@@ -5,8 +5,8 @@
 The missing part of [Sealed Secrets](https://github.com/bitnami-labs/sealed-secrets). :closed_lock_with_key:
 
 ## Motivation
-`kubeseal-convert` aims to reduce the friction of importing secrets from a pre-existing secret management systems (e.g. Vault, AWS Secrets Manager, etc) into a `SealedSecret`.  
-Instaed of:
+`kubeseal-convert` aims to reduce the friction of importing secrets from a pre-existing secret management systems (e.g. Vault, AWS Secrets Manager, etc..) into a `SealedSecret`.  
+Instead of:
 1. Going into AWS Secret Manager
 2. Retrieve the secret who needs to be migrated
 3. Create a "normal" k8s secret
@@ -27,6 +27,7 @@ Table of Contents
     - [AWS Secrets Manager](#aws-secrets-manager)
     - [Hashicorp Vault](#hashicorp-vault)
     - [Azure Key Vault](#azure-key-vault)
+    - [GCP Secrets Manager](#gcp-secrets-manager)
   - [Build from source](#build-from-source)
     - [Prerequisites](#prerequisites)
     - [Building Steps](#building-steps)
@@ -57,7 +58,7 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 :white_check_mark: AWS Secrets Manager  
 :white_check_mark: Hashicorp Vault  
 :white_check_mark: Azure Key Vault - Contributed by @kroonprins  
-:question: Google Secrets Manager  
+:white_check_mark: Google Secrets Manager  
 
 ### AWS Secrets Manager
 The AWS client rely on AWS local configuration variables - config file, environment variables, etc.
@@ -67,6 +68,10 @@ Currently, only [`kv-v2`](https://developer.hashicorp.com/vault/docs/secrets/kv/
 ### Azure Key Vault
 The `<SECRETS_STORE>` should contain the vault name from the vault full uri `https://<SECRETS_STORE>.vault.azure.net`.
 Authentication to the vault happens either via environment variables, managed identity, or via the az cli (`az login`).
+### GCP Secrets Manager
+It's highly recommended to use the full secret format: `projects/<PROJECT_ID>/secrets/<SECRET_NAME>/versions/<VERSION>`
+If not, `kubeseal-convert` will try to extract the project ID from the default credentials chain, and will use the latest version of the secret.
+
 
 ## Build from source
 

@@ -4,11 +4,13 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/spf13/cobra"
+
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/azurekeyvault"
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/gcpsecretsmanager"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/kubesealconvert"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/secretsmanager"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/vault"
-	"github.com/spf13/cobra"
 )
 
 var (
@@ -25,10 +27,11 @@ var (
 
 		},
 	}
-	KubeSeal       = kubesealconvert.New()
-	SecretsManager = secretsmanager.New()
-	Vault          = vault.New()
-	AzureKeyVault  = azurekeyvault.New()
+	KubeSeal          = kubesealconvert.New()
+	SecretsManager    = secretsmanager.New()
+	Vault             = vault.New()
+	AzureKeyVault     = azurekeyvault.New()
+	GcpSecretsManager = gcpsecretsmanager.New()
 )
 
 func Execute() {
