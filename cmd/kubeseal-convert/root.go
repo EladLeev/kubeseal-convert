@@ -4,31 +4,34 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/spf13/cobra"
+
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/azurekeyvault"
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/gcpsecretsmanager"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/kubesealconvert"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/secretsmanager"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/handlers/vault"
-	"github.com/spf13/cobra"
 )
 
 var (
 	secretName      string
 	secretNamespace string
 
-	version = "0.0.1"
+	version = "3.0.0"
 	rootCmd = &cobra.Command{
 		Use:     "kubeseal-convert",
 		Short:   "kubeseal-convert - a simple CLI to transform external secrets into Sealed Secrets",
-		Long:    `kubeseal-convert is used to convert external secrets into Sealed Secrets objects, and help you adopt Sealed Secrets more easily.`,
+		Long:    "kubeseal-convert is used to convert external secrets into Sealed Secrets objects, and help you adopt Sealed Secrets more easily.",
 		Version: version,
 		Run: func(cmd *cobra.Command, args []string) {
-
+			cmd.Help()
 		},
 	}
-	KubeSeal       = kubesealconvert.New()
-	SecretsManager = secretsmanager.New()
-	Vault          = vault.New()
-	AzureKeyVault  = azurekeyvault.New()
+	KubeSeal          = kubesealconvert.New()
+	SecretsManager    = secretsmanager.New()
+	Vault             = vault.New()
+	AzureKeyVault     = azurekeyvault.New()
+	GcpSecretsManager = gcpsecretsmanager.New()
 )
 
 func Execute() {
