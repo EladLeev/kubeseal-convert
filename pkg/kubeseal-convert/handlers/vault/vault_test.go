@@ -11,8 +11,14 @@ import (
 )
 
 func Test_getSecret(t *testing.T) {
-	os.Setenv("VAULT_ADDR", "https://vault.example.com")
-	os.Setenv("VAULT_TOKEN", "my-test-token")
+	err := os.Setenv("VAULT_ADDR", "https://vault.example.com")
+	if err != nil {
+		return
+	}
+	err = os.Setenv("VAULT_TOKEN", "my-test-token")
+	if err != nil {
+		return
+	}
 
 	// Create a test server that will simulate the Vault API
 	// and provide a canned response to the getSecret function

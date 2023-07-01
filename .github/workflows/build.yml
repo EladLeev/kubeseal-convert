@@ -1,11 +1,9 @@
 name: Build Package
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   gosec:
