@@ -24,7 +24,10 @@ var (
 		Long:    "kubeseal-convert is used to convert external secrets into Sealed Secrets objects, and help you adopt Sealed Secrets more easily.",
 		Version: version,
 		Run: func(cmd *cobra.Command, args []string) {
-			cmd.Help()
+			err := cmd.Help()
+			if err != nil {
+				return
+			}
 		},
 	}
 	KubeSeal          = kubesealconvert.New()
