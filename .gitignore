@@ -19,3 +19,6 @@ dist/
 
 # Ignore idea directory
 .idea/
+dist/
+
+dist/
