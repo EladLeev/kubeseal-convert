@@ -5,7 +5,7 @@ go 1.19
 require (
 	cloud.google.com/go/secretmanager v1.11.1
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.2.0
-	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets v0.11.0
+	github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets v0.12.0
 	github.com/hashicorp/vault/api v1.9.2
 	github.com/spf13/cobra v1.7.0
 	github.com/stretchr/testify v1.8.4
@@ -17,8 +17,8 @@ require (
 	cloud.google.com/go/compute v1.20.1 // indirect
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v1.1.0 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.2.0 // indirect
-	github.com/Azure/azure-sdk-for-go/sdk/internal v1.1.2 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/azcore v1.4.0 // indirect
+	github.com/Azure/azure-sdk-for-go/sdk/internal v1.2.0 // indirect
 	github.com/Azure/azure-sdk-for-go/sdk/keyvault/internal v0.7.1 // indirect
 	github.com/AzureAD/microsoft-authentication-library-for-go v0.7.0 // indirect
 	github.com/armon/go-metrics v0.3.9 // indirect
