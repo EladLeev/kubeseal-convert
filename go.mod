@@ -89,7 +89,7 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2 v1.20.1
 	github.com/aws/aws-sdk-go-v2/config v1.18.32
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.20.2
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.21.0
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/text v0.12.0 // indirect
