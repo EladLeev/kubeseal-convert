@@ -78,7 +78,7 @@ If not, `kubeseal-convert` will try to extract the project ID from the default c
 
 ### Prerequisites
 
-* Go version 1.19+
+* Go version 1.21+
 * `make` command installed
 * `kubeseal` command installed, and a valid communication to the sealed secrets controller.
 
