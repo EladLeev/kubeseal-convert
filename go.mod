@@ -90,7 +90,7 @@ require (
 	google.golang.org/protobuf v1.32.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
-	k8s.io/apimachinery v0.29.1 // indirect
+	k8s.io/apimachinery v0.29.2 // indirect
 	k8s.io/klog/v2 v2.110.1 // indirect
 	k8s.io/utils v0.0.0-20230726121419-3b25d923346b // indirect
 	sigs.k8s.io/json v0.0.0-20221116044647-bc3834ca7abd // indirect
@@ -105,5 +105,5 @@ require (
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	k8s.io/api v0.29.1
+	k8s.io/api v0.29.2
 )
