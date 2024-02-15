@@ -100,7 +100,7 @@ require (
 require (
 	github.com/aws/aws-sdk-go-v2 v1.25.0
 	github.com/aws/aws-sdk-go-v2/config v1.27.0
-	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.27.0
+	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.27.1
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	golang.org/x/text v0.14.0 // indirect
