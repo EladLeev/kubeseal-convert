@@ -1,3 +1,4 @@
+//nolint:unparam
 package vault
 
 import (
