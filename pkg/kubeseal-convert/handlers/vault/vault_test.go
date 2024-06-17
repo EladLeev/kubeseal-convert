@@ -1,4 +1,3 @@
-//nolint:unparam
 package vault
 
 import (
@@ -45,7 +44,12 @@ func Test_getSecret(t *testing.T) {
 				"password": "my-password",
 			},
 		}
-		fmt.Fprintln(w, secret)
+		// Write the secret data to the response with error handling
+		_, err := fmt.Fprintln(w, secret)
+		if err != nil {
+			t.Errorf("Error writing secret to test server: %v", err)
+			return
+		}
 	}))
 	defer ts.Close()
 
@@ -54,10 +58,10 @@ func Test_getSecret(t *testing.T) {
 	// secret := getSecret(ctx, client, "my-secret")
 
 	// if secret["username"] != "my-username" {
-	// 	t.Errorf("Expected secret username to be 'my-username', got '%s'", secret["username"])
+	//  t.Errorf("Expected secret username to be 'my-username', got '%s'", secret["username"])
 	// }
 	// if secret["password"] != "my-password" {
-	// 	t.Errorf("Expected secret password to be 'my-password', got '%s'", secret["password"])
+	//  t.Errorf("Expected secret password to be 'my-password', got '%s'", secret["password"])
 	// }
 
 }
