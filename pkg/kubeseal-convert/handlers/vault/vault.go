@@ -2,10 +2,10 @@ package vault
 
 import (
 	"context"
-	"log"
 	"os"
 
 	vault "github.com/hashicorp/vault/api"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
@@ -29,6 +29,7 @@ func createClientContext() (context.Context, *vault.Client) {
 // getSecret get the Vault context, client, and secret name and retrieve the secret from Vault
 func getSecret(ctx context.Context, client *vault.Client, secretName string) map[string]interface{} {
 	secret, err := client.KVv2("secret").Get(ctx, secretName)
+	log.Debugf("secret: %v", secret)
 	if err != nil {
 		log.Fatalf("Unable to read secret from the Vault: %v", err)
 	}
@@ -45,5 +46,6 @@ func New() interfaces.Vault {
 
 func (*VaultImp) GetSecret(secretName string) map[string]interface{} {
 	ctx, cli := createClientContext()
+	log.Debugf("ctx: %v", ctx)
 	return getSecret(ctx, cli, secretName)
 }

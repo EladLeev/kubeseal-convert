@@ -6,9 +6,10 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/exec"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/domain"
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
@@ -25,6 +26,7 @@ func checkKubesealBinary() string {
 	if err != nil {
 		log.Fatalf("kubeseal command not found: %v\n%v", err, noKubesealHelper)
 	}
+	log.Debugf("kubesealBinary: %v", kubesealBinary)
 	return kubesealBinary
 }
 
@@ -81,6 +83,8 @@ RawSeal gets a raw k8s secret as a string, and run the kubeseal command, using t
 https://github.com/bitnami-labs/sealed-secrets?tab=readme-ov-file#raw-mode-experimental
 */
 func (*KubesealImpl) RawSeal(secretValues domain.SecretValues) {
+	log.Debug("using raw mode")
+
 	kubesealBinary := checkKubesealBinary()
 
 	secretData, err := json.Marshal(secretValues.Data)
@@ -96,6 +100,7 @@ func (*KubesealImpl) RawSeal(secretValues domain.SecretValues) {
 		args = append(args, "--name", secretValues.Name)
 	}
 
+	log.Debugf("kubesealBinary: %v, args: %v", kubesealBinary, args)
 	output, err := runCommandWithInput(kubesealBinary, args, string(secretData))
 	if err != nil {
 		log.Fatalf("Raw sealing failed: %v", err)
@@ -117,5 +122,6 @@ func (impl *KubesealImpl) BuildSecretFile(secretValues domain.SecretValues, useR
 		log.Fatalf("Unable to marshal secret: %v", err)
 	}
 
+	log.Debugf("rawSecret: %v, outputSecret: %v", rawSecret, output)
 	impl.Seal(string(output))
 }
