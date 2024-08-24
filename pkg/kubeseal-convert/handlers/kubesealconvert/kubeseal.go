@@ -83,9 +83,14 @@ func (*KubesealImpl) RawSeal(secretValues domain.SecretValues) {
 
 	kubesealBinary := checkKubesealBinary()
 
-	secretData, err := json.Marshal(secretValues.Data)
-	if err != nil {
-		log.Fatalf("Failed to marshal secret data: %v", err)
+	dataBytes := buildDataBytes(secretValues)
+	if len(dataBytes) != 1 {
+		log.Fatalf("Raw seal failed: expected 1 byte array, got %d", len(dataBytes))
+	}
+	var secretData []byte
+	for _, v := range dataBytes {
+		secretData = v
+		break
 	}
 
 	args := []string{"--raw"}
