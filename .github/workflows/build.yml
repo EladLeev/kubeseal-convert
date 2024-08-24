@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GO111MODULE: on
+      GOSECGOVERSION: 1.23.0
     steps:
       - name: Checkout Source
         uses: actions/checkout@v4
