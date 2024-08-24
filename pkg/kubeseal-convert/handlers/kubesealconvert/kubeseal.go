@@ -55,7 +55,7 @@ func runCommandWithInput(cmdPath string, cmdArgs []string, input string) (string
 	if err := echoCmd.Wait(); err != nil {
 		return "", fmt.Errorf("echo command failed: %w", err)
 	}
-	log.Debugf("done waiting for echoCmd %v", echoCmd)
+	log.Debugf("done waiting for echoCmd %v, going to run: %v", echoCmd, cmdExec)
 
 	if err := cmdExec.Wait(); err != nil {
 		return "", fmt.Errorf("kubeseal command failed: %w", err)
