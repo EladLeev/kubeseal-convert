@@ -18,6 +18,11 @@ func (_m *KubeSeal) BuildSecretFile(secretValues domain.SecretValues, useRaw boo
 	_m.Called(secretValues, useRaw)
 }
 
+// RawSeal provides a mock function with given fields: secretValues
+func (_m *KubeSeal) RawSeal(secretValues domain.SecretValues) {
+	_m.Called(secretValues)
+}
+
 // Seal provides a mock function with given fields: secret
 func (_m *KubeSeal) Seal(secret string) {
 	_m.Called(secret)
