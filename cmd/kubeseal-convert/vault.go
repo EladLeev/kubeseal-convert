@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/domain"
@@ -11,6 +12,7 @@ var vaultCmd = &cobra.Command{
 	Aliases: []string{"vlt", "vault"},
 	Short:   "Convert Hashicorp Vault secrets",
 	Args:    cobra.ExactArgs(1),
+	PreRun:  toggleDebug,
 	Run: func(cmd *cobra.Command, args []string) {
 		secretVal := domain.SecretValues{
 			Data:        Vault.GetSecret(args[0]),
@@ -19,7 +21,8 @@ var vaultCmd = &cobra.Command{
 			Labels:      ParseLabels(cmd),
 			Annotations: ParseAnnotations(cmd),
 		}
-		KubeSeal.BuildSecretFile(secretVal)
+		log.Debugf("secret values: %v", secretVal)
+		KubeSeal.BuildSecretFile(secretVal, false)
 	},
 }
 

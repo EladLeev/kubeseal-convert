@@ -3,7 +3,8 @@ package secretsmanager
 import (
 	"context"
 	"encoding/json"
-	"log"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -24,6 +25,7 @@ func createConfig() aws.Config {
 // getSecret wil get the secret into a map[string]interface{} as the return value may vary
 func getSecret(svc *secretsmanager.Client, secretName string) map[string]interface{} {
 	r, err := svc.GetSecretValue(context.TODO(), &secretsmanager.GetSecretValueInput{SecretId: &secretName})
+	log.Debugf("secretValue: %v", r)
 	if err != nil {
 		log.Fatal(err.Error())
 	}

@@ -16,13 +16,15 @@ import (
 var (
 	secretName      string
 	secretNamespace string
+	rawMode         bool
 
-	version = "3.0.0"
+	version = "3.2.0"
 	rootCmd = &cobra.Command{
 		Use:     "kubeseal-convert",
 		Short:   "kubeseal-convert - a simple CLI to transform external secrets into Sealed Secrets",
 		Long:    "kubeseal-convert is used to convert external secrets into Sealed Secrets objects, and help you adopt Sealed Secrets more easily.",
 		Version: version,
+		PreRun:  toggleDebug,
 		Run: func(cmd *cobra.Command, args []string) {
 			err := cmd.Help()
 			if err != nil {
@@ -49,6 +51,7 @@ func init() {
 	rootCmd.PersistentFlags().StringVar(&secretNamespace, "namespace", "", "The Sealed Secret namespace. If not specified, taken from k8s context.")
 
 	rootCmd.PersistentFlags().StringToStringP("annotations", "a", map[string]string{}, "Set k8s annotations")
-	rootCmd.PersistentFlags().StringToStringP("labels", "l", map[string]string{}, "Set k8s lables")
-
+	rootCmd.PersistentFlags().StringToStringP("labels", "l", map[string]string{}, "Set k8s labels")
+	rootCmd.PersistentFlags().BoolVar(&rawMode, "raw", false, "[optional] use raw mode")
+	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "[optional] debug logging")
 }

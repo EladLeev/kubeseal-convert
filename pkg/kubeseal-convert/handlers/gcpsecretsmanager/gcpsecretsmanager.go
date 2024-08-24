@@ -3,8 +3,9 @@ package gcpsecretsmanager
 import (
 	"context"
 	"fmt"
-	"log"
 	"strings"
+
+	log "github.com/sirupsen/logrus"
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
@@ -20,6 +21,7 @@ var cleanSecretName string
 // then, we need to extract the project ID from the default credentials
 func buildSecretId(ctx context.Context, secretName string) string {
 	secretSlice := strings.Split(secretName, "/")
+	log.Debugf("secretSlice: %v", secretSlice)
 
 	// The only supported format is: projects/<PROJECT_ID>/secrets/<SECRET_NAME>/versions/<VERSION>
 	if len(secretSlice) != 6 {
@@ -40,6 +42,7 @@ func getSecret(secretName string) map[string]interface{} {
 	ctx := context.Background()
 
 	client, err := secretmanager.NewClient(ctx)
+	log.Debugf("client: %v", client)
 	if err != nil {
 		log.Fatalf("failed to setup client: %v", err)
 	}
@@ -51,8 +54,10 @@ func getSecret(secretName string) map[string]interface{} {
 	accessRequest := &secretmanagerpb.AccessSecretVersionRequest{
 		Name: buildSecretId(ctx, secretName),
 	}
+	log.Debugf("accessRequest: %v", accessRequest)
 
 	result, err := client.AccessSecretVersion(ctx, accessRequest)
+	log.Debugf("result: %v", result)
 	if err != nil {
 		log.Fatalf("failed to access secret version: %v", err)
 	}
