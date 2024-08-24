@@ -34,6 +34,7 @@ func checkKubesealBinary() string {
 func runCommandWithInput(cmdPath string, cmdArgs []string, input string) (string, error) {
 	echoCmd := exec.Command("echo", "-n", input)
 	cmdExec := exec.Command(cmdPath, cmdArgs...)
+	log.Debugf("echoCmd: %v, cmdArgs: ", echoCmd, cmdArgs)
 
 	var outputBuffer bytes.Buffer
 	r, w := io.Pipe()
@@ -54,9 +55,12 @@ func runCommandWithInput(cmdPath string, cmdArgs []string, input string) (string
 	if err := echoCmd.Wait(); err != nil {
 		return "", fmt.Errorf("echo command failed: %w", err)
 	}
+	log.Debugf("done waiting for echoCmd %v", echoCmd)
+
 	if err := cmdExec.Wait(); err != nil {
 		return "", fmt.Errorf("kubeseal command failed: %w", err)
 	}
+	log.Debugf("done waiting for cmdExec %v", cmdExec)
 
 	return outputBuffer.String(), nil
 }
