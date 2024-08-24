@@ -45,12 +45,14 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 ```
 ### Flags
 | Name                  | Description                                                            | Require | Type       |
-| --------------------- | ---------------------------------------------------------------------- | ------- | ---------- |
+|-----------------------|------------------------------------------------------------------------|---------|------------|
 | `-n`, `--name`        | The Sealed Secret name.                                                | `V`     | `string`   |
 | `--namespace`         | The Sealed Secret namespace. If not specified, taken from k8s context. |         | `string`   |
 | `-a`, `--annotations` | Sets k8s annotations. KV pairs, comma separated.                       |         | `[]string` |
-| `-l`, `--labels`      | Sets k8s lables. KV pairs, comma separated.                            |         | `[]string` |
+| `-l`, `--labels`      | Sets k8s labels. KV pairs, comma separated.                            |         | `[]string` |
+| `--raw`               | Use Kubeseal raw mode.                                                 |         | `bool`     |
 |                       |                                                                        |         |            |
+| `-d`, `--debug`       | Run in debug mode.                                                     |         | `bool`     |
 | `-h`, `--help`        | Display help.                                                          |         | `none`     |
 | `-v`, `--version`     | Display version.                                                       |         | `none`     |
 
@@ -78,7 +80,7 @@ If not, `kubeseal-convert` will try to extract the project ID from the default c
 
 ### Prerequisites
 
-* Go version 1.21+
+* Go version 1.22+
 * `make` command installed
 * `kubeseal` command installed, and a valid communication to the sealed secrets controller.
 
@@ -112,6 +114,13 @@ This will:
 3. Call it `test-secret`
 4. Add few annotations and labels
 5. Save it as `secret.yaml` to be push to the repo safely
+
+### Raw Mode
+`kubeseal-convert` supports `kubeseal` [raw mode](https://github.com/bitnami-labs/sealed-secrets?tab=readme-ov-file#raw-mode-experimental), although it is an experimental feature on the SealedSecret project.  
+In this mode, `kubeseal-convert` will fetch the secret from the external system, seal it using the raw mode, and will output to STDOUT. It's your responsibility to put it inside a SealedSecret resource.  
+```shell
+./kubeseal-convert --raw gcpsecretsmanager 'projects/123456789/secrets/myCoolSecret/versions/1' --namespace default --name test-secret
+```
 
 ## Contributing
 
