@@ -8,6 +8,7 @@ linters:
     - govet
     - staticcheck
     - durationcheck
+    - goimports
 
 issues:
   exclude-use-default: false

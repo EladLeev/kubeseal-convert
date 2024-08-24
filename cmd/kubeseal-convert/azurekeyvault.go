@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/domain"
 	"github.com/spf13/cobra"
+
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/domain"
 )
 
 var azureKeyVaultCmd = &cobra.Command{
