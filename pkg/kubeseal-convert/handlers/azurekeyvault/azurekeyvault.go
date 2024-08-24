@@ -7,6 +7,7 @@ import (
 
 	identity "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	secrets "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
+
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
 

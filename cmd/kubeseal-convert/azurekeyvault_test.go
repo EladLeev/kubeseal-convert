@@ -5,8 +5,9 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/eladleev/kubeseal-convert/mocks"
 	"gotest.tools/assert"
+
+	"github.com/eladleev/kubeseal-convert/mocks"
 )
 
 func TestAzureKeyVaultCmd(t *testing.T) {
@@ -24,7 +25,7 @@ func TestAzureKeyVaultCmd(t *testing.T) {
 	})
 	AzureKeyVault = mockAzureKeyVault
 
-	//test az command
+	// test az command
 	output, _ := ExecuteCommand(rootCmd, "az", "dev/secret", "--name", "blabla")
 	assert.Equal(t, "", output)
 }

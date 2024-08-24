@@ -5,8 +5,9 @@ import (
 	"log"
 	"os"
 
-	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 	vault "github.com/hashicorp/vault/api"
+
+	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
 
 // createClientContext creates a new Vault client with default config
