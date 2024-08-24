@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"os"
 	"os/exec"
 
 	log "github.com/sirupsen/logrus"
@@ -32,35 +31,31 @@ func checkKubesealBinary() string {
 
 // runCommandWithInput sets up and runs a command with the provided input, and returns the output.
 func runCommandWithInput(cmdPath string, cmdArgs []string, input string) (string, error) {
-	echoCmd := exec.Command("echo", "-n", input)
-	cmdExec := exec.Command(cmdPath, cmdArgs...)
-	log.Debugf("echoCmd: %v, cmdArgs: ", echoCmd, cmdArgs)
+	cmd := exec.Command(cmdPath, cmdArgs...)
+	log.Debugf("cmd: %v, cmdArgs: %v", cmd, cmdArgs)
 
-	var outputBuffer bytes.Buffer
-	r, w := io.Pipe()
-	defer w.Close()
+	var outputBuffer, errorBuffer bytes.Buffer
+	cmd.Stdout = &outputBuffer
+	cmd.Stderr = &errorBuffer
 
-	echoCmd.Stdout = w
-	cmdExec.Stdin = r
-	cmdExec.Stdout = &outputBuffer
-	cmdExec.Stderr = os.Stderr
-
-	if err := echoCmd.Start(); err != nil {
-		return "", fmt.Errorf("failed to start echo command: %w", err)
-	}
-	if err := cmdExec.Start(); err != nil {
-		return "", fmt.Errorf("failed to start kubeseal command: %w", err)
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		return "", fmt.Errorf("failed to get stdin pipe: %w", err)
 	}
 
-	if err := echoCmd.Wait(); err != nil {
-		return "", fmt.Errorf("echo command failed: %w", err)
+	if err := cmd.Start(); err != nil {
+		return "", fmt.Errorf("failed to start command: %w", err)
 	}
-	log.Debugf("done waiting for echoCmd %v, going to run: %v", echoCmd, cmdExec)
 
-	if err := cmdExec.Wait(); err != nil {
-		return "", fmt.Errorf("kubeseal command failed: %w", err)
+	_, err = io.WriteString(stdin, input)
+	if err != nil {
+		return "", fmt.Errorf("failed to write to stdin: %w", err)
 	}
-	log.Debugf("done waiting for cmdExec %v", cmdExec)
+	stdin.Close()
+
+	if err := cmd.Wait(); err != nil {
+		return "", fmt.Errorf("command failed: %w\nStderr: %s", err, errorBuffer.String())
+	}
 
 	return outputBuffer.String(), nil
 }
@@ -82,10 +77,7 @@ func (*KubesealImpl) Seal(secret string) {
 	fmt.Print(output)
 }
 
-/*
-RawSeal gets a raw k8s secret as a string, and run the kubeseal command, using the RAW mod
-https://github.com/bitnami-labs/sealed-secrets?tab=readme-ov-file#raw-mode-experimental
-*/
+// RawSeal gets a raw k8s secret as a string, and run the kubeseal command, using the RAW mode
 func (*KubesealImpl) RawSeal(secretValues domain.SecretValues) {
 	log.Debug("using raw mode")
 
