@@ -22,8 +22,8 @@ func buildDataBytes(sv domain.SecretValues) map[string][]byte {
 	return data
 }
 
-// BuildSecret gets the SecretValues struct and returns a raw k8s secret
-func buildSecret(sv domain.SecretValues) coreV1.Secret {
+// buildKubeSecret gets the SecretValues struct and returns a raw k8s secret
+func buildKubeSecret(sv domain.SecretValues) coreV1.Secret {
 	var secretSpec coreV1.Secret
 
 	secretSpec.Name = sv.Name

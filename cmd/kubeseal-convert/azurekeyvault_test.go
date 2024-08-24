@@ -15,7 +15,7 @@ func TestAzureKeyVaultCmd(t *testing.T) {
 
 	// mock kubeseal
 	mockKubeSeal := mocks.NewKubeSeal(t)
-	mockKubeSeal.On("BuildSecretFile", mock.Anything).Return()
+	mockKubeSeal.On("BuildSecretFile", mock.Anything, mock.AnythingOfType("bool")).Return()
 	KubeSeal = mockKubeSeal
 
 	// mock azurekeyvault

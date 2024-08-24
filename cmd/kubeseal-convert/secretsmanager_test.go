@@ -5,8 +5,9 @@ import (
 
 	"github.com/stretchr/testify/mock"
 
-	"github.com/eladleev/kubeseal-convert/mocks"
 	"gotest.tools/assert"
+
+	"github.com/eladleev/kubeseal-convert/mocks"
 )
 
 func TestSecretManagerCmd(t *testing.T) {
@@ -14,14 +15,14 @@ func TestSecretManagerCmd(t *testing.T) {
 
 	// mock kubeseal
 	mockKubeSeal := mocks.NewKubeSeal(t)
-	mockKubeSeal.On("BuildSecretFile", mock.Anything).Return()
+	mockKubeSeal.On("BuildSecretFile", mock.Anything, mock.AnythingOfType("bool")).Return()
 	KubeSeal = mockKubeSeal
 
 	// mock secretsmanager
 	mockSecretsManager := mocks.NewSecretsManager(t)
 	mockSecretsManager.On("GetSecret", mock.Anything).Return(nil)
 	SecretsManager = mockSecretsManager
-	//test sm command
+	// test sm command
 	output, _ := ExecuteCommand(rootCmd, "sm", "dev/secret", "--name", "blabla")
 	assert.Equal(t, "", output)
 }

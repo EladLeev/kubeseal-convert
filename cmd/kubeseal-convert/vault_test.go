@@ -3,9 +3,10 @@ package cmd
 import (
 	"testing"
 
-	"github.com/eladleev/kubeseal-convert/mocks"
 	"github.com/stretchr/testify/mock"
 	"gotest.tools/assert"
+
+	"github.com/eladleev/kubeseal-convert/mocks"
 )
 
 func TestVaultCmd(t *testing.T) {
@@ -13,7 +14,7 @@ func TestVaultCmd(t *testing.T) {
 
 	// mock kubeseal
 	mockKubeSeal := mocks.NewKubeSeal(t)
-	mockKubeSeal.On("BuildSecretFile", mock.Anything).Return()
+	mockKubeSeal.On("BuildSecretFile", mock.Anything, mock.AnythingOfType("bool")).Return()
 	KubeSeal = mockKubeSeal
 
 	// mock vault

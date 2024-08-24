@@ -19,7 +19,7 @@ var secretsmanagerCmd = &cobra.Command{
 			Labels:      ParseLabels(cmd),
 			Annotations: ParseAnnotations(cmd),
 		}
-		KubeSeal.BuildSecretFile(secretVal)
+		KubeSeal.BuildSecretFile(secretVal, rawMode)
 	},
 }
 

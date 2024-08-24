@@ -60,8 +60,8 @@ func (*KubesealImpl) Seal(secret string) {
 }
 
 // BuildSecretFile generates a Sealed Secrets
-func (impl *KubesealImpl) BuildSecretFile(secretValues domain.SecretValues) {
-	rawSecret := buildSecret(secretValues)
+func (impl *KubesealImpl) BuildSecretFile(secretValues domain.SecretValues, useRaw bool) {
+	rawSecret := buildKubeSecret(secretValues)
 	output, e := json.Marshal(&rawSecret)
 	if e != nil {
 		fmt.Printf("Unable to marshal secret: %v", e)
