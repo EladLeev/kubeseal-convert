@@ -15,14 +15,14 @@ var vaultCmd = &cobra.Command{
 	PreRun:  toggleDebug,
 	Run: func(cmd *cobra.Command, args []string) {
 		secretVal := domain.SecretValues{
-			Data:        Vault.GetSecret(args[0]),
+			Data:        Vault.GetSecret(args[0], timeout),
 			Name:        ParseStringFlag(cmd, "name"),
 			Namespace:   ParseStringFlag(cmd, "namespace"),
 			Labels:      ParseLabels(cmd),
 			Annotations: ParseAnnotations(cmd),
 		}
 		log.Debugf("secret values: %v", secretVal)
-		KubeSeal.BuildSecretFile(secretVal, false)
+		KubeSeal.BuildSecretFile(secretVal, rawMode)
 	},
 }
 

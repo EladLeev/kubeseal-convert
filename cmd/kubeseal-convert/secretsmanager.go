@@ -15,7 +15,7 @@ var secretsmanagerCmd = &cobra.Command{
 	PreRun:  toggleDebug,
 	Run: func(cmd *cobra.Command, args []string) {
 		secretVal := domain.SecretValues{
-			Data:        SecretsManager.GetSecret(args[0]),
+			Data:        SecretsManager.GetSecret(args[0], timeout),
 			Name:        ParseStringFlag(cmd, "name"),
 			Namespace:   ParseStringFlag(cmd, "namespace"),
 			Labels:      ParseLabels(cmd),

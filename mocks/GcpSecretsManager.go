@@ -9,17 +9,17 @@ type GcpSecretsManager struct {
 	mock.Mock
 }
 
-// GetSecret provides a mock function with given fields: secretName
-func (_m *GcpSecretsManager) GetSecret(secretName string) map[string]interface{} {
-	ret := _m.Called(secretName)
+// GetSecret provides a mock function with given fields: secretName, timeout
+func (_m *GcpSecretsManager) GetSecret(secretName string, timeout int) map[string]interface{} {
+	ret := _m.Called(secretName, timeout)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetSecret")
 	}
 
 	var r0 map[string]interface{}
-	if rf, ok := ret.Get(0).(func(string) map[string]interface{}); ok {
-		r0 = rf(secretName)
+	if rf, ok := ret.Get(0).(func(string, int) map[string]interface{}); ok {
+		r0 = rf(secretName, timeout)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(map[string]interface{})

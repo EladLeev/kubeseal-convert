@@ -54,7 +54,7 @@ func Test_getSecret(t *testing.T) {
 	defer ts.Close()
 
 	// os.Setenv("VAULT_ADDR", ts.URL)
-	// ctx, client := createClientContext()
+	// ctx, client := createClient()
 	// secret := getSecret(ctx, client, "my-secret")
 
 	// if secret["username"] != "my-username" {

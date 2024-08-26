@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"strings"
+	"time"
 
 	log "github.com/sirupsen/logrus"
 
@@ -37,14 +38,13 @@ func buildSecretId(ctx context.Context, secretName string) string {
 	return secretName
 }
 
-func getSecret(secretName string) map[string]interface{} {
+func getSecret(ctx context.Context, secretName string) (map[string]interface{}, error) {
 	mp := make(map[string]interface{})
-	ctx := context.Background()
 
 	client, err := secretmanager.NewClient(ctx)
 	log.Debugf("client: %v", client)
 	if err != nil {
-		log.Fatalf("failed to setup client: %v", err)
+		return nil, fmt.Errorf("failed to setup client: %v", err)
 	}
 
 	defer func(client *secretmanager.Client) {
@@ -59,11 +59,11 @@ func getSecret(secretName string) map[string]interface{} {
 	result, err := client.AccessSecretVersion(ctx, accessRequest)
 	log.Debugf("result: %v", result)
 	if err != nil {
-		log.Fatalf("failed to access secret version: %v", err)
+		return nil, fmt.Errorf("failed to access secret version: %v", err)
 	}
 
 	mp[cleanSecretName] = string(result.Payload.Data)
-	return mp
+	return mp, nil
 }
 
 type GcpSecretsManagerImp struct {
@@ -73,6 +73,13 @@ func New() interfaces.SecretsManager {
 	return &GcpSecretsManagerImp{}
 }
 
-func (*GcpSecretsManagerImp) GetSecret(secretName string) map[string]interface{} {
-	return getSecret(secretName)
+func (*GcpSecretsManagerImp) GetSecret(secretName string, timeout int) map[string]interface{} {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
+	defer cancel()
+
+	secret, err := getSecret(ctx, secretName)
+	if err != nil {
+		log.Errorf("failed to get secret: %v", err)
+	}
+	return secret
 }
