@@ -33,6 +33,7 @@ Table of Contents
     - [Prerequisites](#prerequisites)
     - [Building Steps](#building-steps)
   - [Examples](#examples)
+      - [Raw Mode](#raw-mode)
   - [Contributing](#contributing)
   - [License](#license)
 
@@ -52,6 +53,7 @@ The `SealedSecret` will be printed to `STDOUT`. You can run it as is, as part of
 | `-l`, `--labels`      | Sets k8s labels. KV pairs, comma separated.                            |         | `[]string` |
 | `--raw`               | Use Kubeseal raw mode.                                                 |         | `bool`     |
 |                       |                                                                        |         |            |
+| `-t`, `--timeout`     | Set timeout to the secret fetch. Default: 30                           |         | `int`      |
 | `-d`, `--debug`       | Run in debug mode.                                                     |         | `bool`     |
 | `-h`, `--help`        | Display help.                                                          |         | `none`     |
 | `-v`, `--version`     | Display version.                                                       |         | `none`     |
@@ -82,7 +84,7 @@ If not, `kubeseal-convert` will try to extract the project ID from the default c
 
 * Go version 1.22+
 * `make` command installed
-* `kubeseal` command installed, and a valid communication to the sealed secrets controller.
+* `kubeseal` command installed, and a valid communication to the Sealed Secrets controller.
 
 ### Building Steps
 

@@ -19,7 +19,7 @@ var (
 	rawMode         bool
 	timeout         int
 
-	version = "3.2.0"
+	version = "3.3.0"
 	rootCmd = &cobra.Command{
 		Use:     "kubeseal-convert",
 		Short:   "kubeseal-convert - a simple CLI to transform external secrets into Sealed Secrets",
