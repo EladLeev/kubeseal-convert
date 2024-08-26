@@ -3,50 +3,56 @@ package secretsmanager
 import (
 	"context"
 	"encoding/json"
-
-	log "github.com/sirupsen/logrus"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	log "github.com/sirupsen/logrus"
 
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
 
-// TODO: Implement proper context
 func createConfig() aws.Config {
-	cfg, err := config.LoadDefaultConfig(context.TODO())
+	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
-		log.Fatalf("Unable to load SDK config, %v", err)
+		log.Errorf("unable to load SDK config, %v", err)
 	}
 	return cfg
 }
 
 // getSecret wil get the secret into a map[string]interface{} as the return value may vary
-func getSecret(svc *secretsmanager.Client, secretName string) map[string]interface{} {
-	r, err := svc.GetSecretValue(context.TODO(), &secretsmanager.GetSecretValueInput{SecretId: &secretName})
-	log.Debugf("secretValue: %v", r)
+func getSecret(ctx context.Context, svc *secretsmanager.Client, secretName string) (map[string]interface{}, error) {
+	r, err := svc.GetSecretValue(ctx, &secretsmanager.GetSecretValueInput{SecretId: &secretName})
 	if err != nil {
-		log.Fatal(err.Error())
+		return nil, err
 	}
 
 	mp := make(map[string]interface{})
-	error := json.Unmarshal([]byte(*r.SecretString), &mp)
-	if error != nil {
-		log.Fatalf("Unable to parse secret with err: %v", error)
+	err = json.Unmarshal([]byte(*r.SecretString), &mp)
+	if err != nil {
+		return nil, err
 	}
-	return mp
+	return mp, nil
 }
 
 type SecretsManagerImp struct {
+	cfg aws.Config
 }
 
 func New() interfaces.SecretsManager {
-	return &SecretsManagerImp{}
+	return &SecretsManagerImp{cfg: createConfig()}
 }
 
-func (*SecretsManagerImp) GetSecret(secretName string) map[string]interface{} {
-	cfg := createConfig()
-	svc := secretsmanager.NewFromConfig(cfg)
-	return getSecret(svc, secretName)
+func (s *SecretsManagerImp) GetSecret(secretName string, timeout int) map[string]interface{} {
+	// Create a context with a timeout
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
+	defer cancel()
+
+	svc := secretsmanager.NewFromConfig(s.cfg)
+	secret, err := getSecret(ctx, svc, secretName)
+	if err != nil {
+		log.Errorf("failed to get secret: %v", err)
+	}
+	return secret
 }

@@ -20,7 +20,7 @@ func TestSecretManagerCmd(t *testing.T) {
 	// mock secretsmanager
 	mockSecretsManager := mocks.NewSecretsManager(t)
 
-	mockSecretsManager.On("GetSecret", mock.Anything).Return(map[string]interface{}{"key": "value"}, nil)
+	mockSecretsManager.On("GetSecret", mock.Anything, mock.AnythingOfType("int")).Return(map[string]interface{}{"key": "value"}, nil)
 	SecretsManager = mockSecretsManager
 
 	// test sm command

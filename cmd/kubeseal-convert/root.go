@@ -17,6 +17,7 @@ var (
 	secretName      string
 	secretNamespace string
 	rawMode         bool
+	timeout         int
 
 	version = "3.2.0"
 	rootCmd = &cobra.Command{
@@ -54,4 +55,5 @@ func init() {
 	rootCmd.PersistentFlags().StringToStringP("labels", "l", map[string]string{}, "Set k8s labels")
 	rootCmd.PersistentFlags().BoolVar(&rawMode, "raw", false, "[optional] use raw mode")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "[optional] debug logging")
+	rootCmd.PersistentFlags().IntVarP(&timeout, "timeout", "t", 30, "[optional] get secret timeout")
 }

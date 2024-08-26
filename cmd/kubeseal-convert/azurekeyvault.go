@@ -15,7 +15,7 @@ var azureKeyVaultCmd = &cobra.Command{
 	PreRun:  toggleDebug,
 	Run: func(cmd *cobra.Command, args []string) {
 		secretVal := domain.SecretValues{
-			Data:        AzureKeyVault.GetSecrets(args[0]),
+			Data:        AzureKeyVault.GetSecrets(args[0], timeout),
 			Name:        ParseStringFlag(cmd, "name"),
 			Namespace:   ParseStringFlag(cmd, "namespace"),
 			Labels:      ParseLabels(cmd),

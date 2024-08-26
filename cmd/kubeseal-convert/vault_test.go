@@ -19,7 +19,7 @@ func TestVaultCmd(t *testing.T) {
 
 	// mock vault
 	mockVault := mocks.NewVault(t)
-	mockVault.On("GetSecret", mock.Anything).Return(map[string]interface{}{
+	mockVault.On("GetSecret", mock.Anything, mock.AnythingOfType("int")).Return(map[string]interface{}{
 		"key": "value",
 	}, nil)
 	Vault = mockVault
