@@ -11,7 +11,7 @@ require (
 	github.com/hashicorp/vault/api v1.15.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.1
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.10.0
 	golang.org/x/oauth2 v0.25.0
 	gotest.tools v2.2.0+incompatible
 )
