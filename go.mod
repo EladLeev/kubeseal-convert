@@ -2,7 +2,7 @@ module github.com/eladleev/kubeseal-convert
 
 go 1.23.0
 
-toolchain go1.23.3
+toolchain go1.23.6
 
 require (
 	cloud.google.com/go/secretmanager v1.14.3
