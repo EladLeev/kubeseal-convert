@@ -1,4 +1,3 @@
-// nolint
 package kubesealconvert
 
 import (
@@ -16,8 +15,7 @@ import (
 
 var noKubesealHelper = "Follow: https://github.com/bitnami-labs/sealed-secrets?tab=readme-ov-file#kubeseal to install the tool."
 
-type KubesealImpl struct {
-}
+type KubesealImpl struct{}
 
 // checkKubesealBinary verifies if kubeseal is installed and returns its path
 func checkKubesealBinary() string {
@@ -51,7 +49,9 @@ func runCommandWithInput(cmdPath string, cmdArgs []string, input string) (string
 	if err != nil {
 		return "", fmt.Errorf("failed to write to stdin: %w", err)
 	}
-	stdin.Close()
+	if err := stdin.Close(); err != nil {
+		return "", fmt.Errorf("failed to close stdin: %w", err)
+	}
 
 	if err := cmd.Wait(); err != nil {
 		return "", fmt.Errorf("command failed: %w\nStderr: %s", err, errorBuffer.String())

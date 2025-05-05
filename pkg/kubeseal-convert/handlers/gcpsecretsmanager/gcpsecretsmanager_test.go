@@ -23,7 +23,6 @@ func Test_buildSecretId(t *testing.T) {
 	if result != expectedValue {
 		t.Errorf("Unexpected result. Got: %s, Want: %s", result, expectedValue)
 	}
-
 }
 
 func Test_getSecret(t *testing.T) {
@@ -39,7 +38,10 @@ func Test_getSecret(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got, _ := getSecret(context.TODO(), tt.args.secretName); !reflect.DeepEqual(got, tt.want) {
+			if got, _ := getSecret(context.TODO(), tt.args.secretName); !reflect.DeepEqual(
+				got,
+				tt.want,
+			) {
 				t.Errorf("getSecret() = %v, want %v", got, tt.want)
 			}
 		})

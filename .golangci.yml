@@ -1,19 +1,81 @@
+version: "2"
+
 run:
   timeout: 5m
+  tests: true
+  go: "1.23"
+
+formatters:
+  enable:
+    - gofmt
+    - gofumpt
+    - goimports
+    - golines
 
 linters:
   enable:
-    - errcheck
-    - goimports
-    - govet
-    - staticcheck
-    - durationcheck
-    - goimports
+    # Fast, standard linters
+    - errcheck # Check for unchecked errors
+    - govet # Examines Go source for suspicious constructs
+    - ineffassign # Detects unused assignments
+    - staticcheck # Extensive static analysis
+    - unused # Checks for unused code
+
+    # Code quality linters
+    - gocyclo # Checks cyclomatic complexity
+    - gosec # Security checks
+    - misspell # Finds commonly misspelled words
+    - nilerr # finds the code that returns nil even if it checks that the error is not nil
+
+    # Additional useful linters
+    - bodyclose # Checks that HTTP response bodies are closed
+    - dogsled # Checks for too many blank identifiers
+    - dupl # Checks for duplicate code
+    - nolintlint # Reports ill-formed nolint directives
+    
+  exclusions:
+    # Log a warning if an exclusion rule is unused.
+    # Default: false
+    warn-unused: true
+    # Predefined exclusion rules.
+    # Default: []
+    presets:
+      - std-error-handling
+      - common-false-positives
+    # Excluding configuration per-path, per-linter, per-text and per-source.
+    rules:
+      - source: 'TODO'
+        linters: [ godot ]
+      - text: 'should have a package comment'
+        linters: [ revive ]
+      - text: 'exported \S+ \S+ should have comment( \(or a comment on this block\))? or be unexported'
+        linters: [ revive ]
+      - text: 'package comment should be of the form ".+"'
+        source: '// ?(nolint|TODO)'
+        linters: [ revive ]
+      - text: 'comment on exported \S+ \S+ should be of the form ".+"'
+        source: '// ?(nolint|TODO)'
+        linters: [ revive, staticcheck ]
+      - path: '_test\.go'
+        linters:
+          - bodyclose
+          - dupl
+          - errcheck
+          - funlen
+          - goconst
+          - gosec
+          - noctx
+          - wrapcheck
+
 
 issues:
-  exclude-use-default: false
-  max-issues-per-linter: 0
-  max-same-issues: 0
+  max-issues-per-linter: 50
+  max-same-issues: 5
 
 output:
-  sort-results: true
+  formats:
+    text:
+      path: stdout
+      print-issued-lines: true
+      print-linter-name: true
+      colors: true

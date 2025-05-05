@@ -5,7 +5,5 @@ import (
 )
 
 func Test_getSecret(t *testing.T) {
-
 	// TODO
-
 }

@@ -29,7 +29,11 @@ func createClient() (*vault.Client, error) {
 }
 
 // getSecret get the Vault context, client, and secret name and retrieve the secret from Vault
-func getSecret(ctx context.Context, client *vault.Client, secretName string) (map[string]interface{}, error) {
+func getSecret(
+	ctx context.Context,
+	client *vault.Client,
+	secretName string,
+) (map[string]interface{}, error) {
 	secret, err := client.KVv2("secret").Get(ctx, secretName)
 	log.Debugf("secret: %v", secret)
 	if err != nil {
@@ -39,8 +43,7 @@ func getSecret(ctx context.Context, client *vault.Client, secretName string) (ma
 	return secret.Data, nil
 }
 
-type VaultImp struct {
-}
+type VaultImp struct{}
 
 func New() interfaces.Vault {
 	return &VaultImp{}

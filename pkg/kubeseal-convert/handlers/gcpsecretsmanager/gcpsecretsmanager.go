@@ -31,7 +31,12 @@ func buildSecretId(ctx context.Context, secretName string) string {
 			log.Fatalf("failed to FindDefaultCredentials: %v", err)
 		}
 		cleanSecretName = secretName
-		return fmt.Sprintf("projects/%v/secrets/%v/versions/%v", credentials.ProjectID, cleanSecretName, "latest")
+		return fmt.Sprintf(
+			"projects/%v/secrets/%v/versions/%v",
+			credentials.ProjectID,
+			cleanSecretName,
+			"latest",
+		)
 	}
 
 	cleanSecretName = secretSlice[3]
@@ -66,8 +71,7 @@ func getSecret(ctx context.Context, secretName string) (map[string]interface{}, 
 	return mp, nil
 }
 
-type GcpSecretsManagerImp struct {
-}
+type GcpSecretsManagerImp struct{}
 
 func New() interfaces.SecretsManager {
 	return &GcpSecretsManagerImp{}

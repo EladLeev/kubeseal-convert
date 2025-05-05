@@ -14,14 +14,16 @@ func TestAzureKeyVaultCmd(t *testing.T) {
 
 	// mock kubeseal
 	mockKubeSeal := mocks.NewKubeSeal(t)
-	mockKubeSeal.On("BuildSecretFile", mock.AnythingOfType("domain.SecretValues"), mock.AnythingOfType("bool")).Return()
+	mockKubeSeal.On("BuildSecretFile", mock.AnythingOfType("domain.SecretValues"), mock.AnythingOfType("bool")).
+		Return()
 	KubeSeal = mockKubeSeal
 
 	// mock azurekeyvault
 	mockAzureKeyVault := mocks.NewAzureKeyVault(t)
-	mockAzureKeyVault.On("GetSecrets", mock.Anything, mock.AnythingOfType("int")).Return(map[string]interface{}{
-		"key": "value",
-	}, nil)
+	mockAzureKeyVault.On("GetSecrets", mock.Anything, mock.AnythingOfType("int")).
+		Return(map[string]interface{}{
+			"key": "value",
+		}, nil)
 	AzureKeyVault = mockAzureKeyVault
 
 	// test az command

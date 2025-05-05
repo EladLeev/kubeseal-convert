@@ -48,10 +48,13 @@ func Execute() {
 }
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&secretName, "name", "n", "", "The Sealed Secret name (required)")
-	rootCmd.PersistentFlags().StringVar(&secretNamespace, "namespace", "", "The Sealed Secret namespace. If not specified, taken from k8s context.")
+	rootCmd.PersistentFlags().
+		StringVarP(&secretName, "name", "n", "", "The Sealed Secret name (required)")
+	rootCmd.PersistentFlags().
+		StringVar(&secretNamespace, "namespace", "", "The Sealed Secret namespace. If not specified, taken from k8s context.")
 
-	rootCmd.PersistentFlags().StringToStringP("annotations", "a", map[string]string{}, "Set k8s annotations")
+	rootCmd.PersistentFlags().
+		StringToStringP("annotations", "a", map[string]string{}, "Set k8s annotations")
 	rootCmd.PersistentFlags().StringToStringP("labels", "l", map[string]string{}, "Set k8s labels")
 	rootCmd.PersistentFlags().BoolVar(&rawMode, "raw", false, "[optional] use raw mode")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "[optional] debug logging")
