@@ -12,8 +12,7 @@ import (
 
 var debug bool
 
-type PlainFormatter struct {
-}
+type PlainFormatter struct{}
 
 func (f *PlainFormatter) Format(entry *log.Entry) ([]byte, error) {
 	return []byte(fmt.Sprintf("%s\n", entry.Message)), nil

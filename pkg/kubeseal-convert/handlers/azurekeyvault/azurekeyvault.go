@@ -21,7 +21,10 @@ func createClient(vaultName string) (*secrets.Client, error) {
 	cred, err := identity.NewDefaultAzureCredential(nil)
 	log.Debugf("Azure identity: %v", cred)
 	if err != nil {
-		return nil, fmt.Errorf("failed to obtain a credential needed to login to the azure vault: %v", err)
+		return nil, fmt.Errorf(
+			"failed to obtain a credential needed to login to the azure vault: %v",
+			err,
+		)
 	}
 
 	vaultURI := fmt.Sprintf("https://%s.vault.azure.net", vaultName)
@@ -34,7 +37,11 @@ func createClient(vaultName string) (*secrets.Client, error) {
 }
 
 // retrieve secret by name with the client
-func getSecrets(ctx context.Context, client *secrets.Client, vaultName string) (map[string]interface{}, error) {
+func getSecrets(
+	ctx context.Context,
+	client *secrets.Client,
+	vaultName string,
+) (map[string]interface{}, error) {
 	mp := make(map[string]interface{})
 
 	pager := client.NewListSecretsPager(&secrets.ListSecretsOptions{})
@@ -46,10 +53,20 @@ func getSecrets(ctx context.Context, client *secrets.Client, vaultName string) (
 			return nil, fmt.Errorf("failed to retrieve secrets from vault '%s': %v", vaultName, err)
 		}
 		for _, secret := range page.Value {
-			value, err := client.GetSecret(ctx, secret.ID.Name(), secret.ID.Version(), &secrets.GetSecretOptions{})
+			value, err := client.GetSecret(
+				ctx,
+				secret.ID.Name(),
+				secret.ID.Version(),
+				&secrets.GetSecretOptions{},
+			)
 			log.Debugf("secret value: %v", value)
 			if err != nil {
-				return nil, fmt.Errorf("failed to retrieve secret '%s' from vault '%s': %v", secret.ID.Name(), vaultName, err)
+				return nil, fmt.Errorf(
+					"failed to retrieve secret '%s' from vault '%s': %v",
+					secret.ID.Name(),
+					vaultName,
+					err,
+				)
 			}
 			mp[secret.ID.Name()] = *value.Value
 		}
@@ -58,8 +75,7 @@ func getSecrets(ctx context.Context, client *secrets.Client, vaultName string) (
 	return mp, nil
 }
 
-type AzureKeyVaultImp struct {
-}
+type AzureKeyVaultImp struct{}
 
 func New() interfaces.AzureKeyVault {
 	return &AzureKeyVaultImp{}

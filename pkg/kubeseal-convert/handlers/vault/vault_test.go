@@ -30,12 +30,18 @@ func Test_getSecret(t *testing.T) {
 
 		// Assert that the request URL is correct
 		if r.URL.String() != "/v1/secret/data/my-secret" {
-			t.Errorf("Expected request URL to be '/v1/secret/data/my-secret', got '%s'", r.URL.String())
+			t.Errorf(
+				"Expected request URL to be '/v1/secret/data/my-secret', got '%s'",
+				r.URL.String(),
+			)
 		}
 
 		// Assert that the request has the correct authorization header
 		if r.Header.Get("X-Vault-Token") != "my-test-token" {
-			t.Errorf("Expected request to have authorization header 'my-test-token', got '%s'", r.Header.Get("X-Vault-Token"))
+			t.Errorf(
+				"Expected request to have authorization header 'my-test-token', got '%s'",
+				r.Header.Get("X-Vault-Token"),
+			)
 		}
 
 		secret := vault.KVSecret{
@@ -63,5 +69,4 @@ func Test_getSecret(t *testing.T) {
 	// if secret["password"] != "my-password" {
 	//  t.Errorf("Expected secret password to be 'my-password', got '%s'", secret["password"])
 	// }
-
 }

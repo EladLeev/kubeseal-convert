@@ -22,7 +22,11 @@ func createConfig() aws.Config {
 }
 
 // getSecret wil get the secret into a map[string]interface{} as the return value may vary
-func getSecret(ctx context.Context, svc *secretsmanager.Client, secretName string) (map[string]interface{}, error) {
+func getSecret(
+	ctx context.Context,
+	svc *secretsmanager.Client,
+	secretName string,
+) (map[string]interface{}, error) {
 	r, err := svc.GetSecretValue(ctx, &secretsmanager.GetSecretValueInput{SecretId: &secretName})
 	if err != nil {
 		return nil, err
