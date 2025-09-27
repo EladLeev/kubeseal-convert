@@ -15,7 +15,7 @@ jobs:
         with:
           go-version: "1.24.2"
       - name: Checkout Source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Run Gosec Security Scanner
         uses: securego/gosec@master
         with:
@@ -34,6 +34,6 @@ jobs:
         with:
           go-version: ${{ matrix.go-version }}
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Test
         run: go test ./...
