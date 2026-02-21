@@ -2,8 +2,13 @@ package gcpsecretsmanager
 
 import (
 	"context"
-	"reflect"
+	"errors"
 	"testing"
+
+	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
+	"github.com/googleapis/gax-go/v2"
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
 func Test_buildSecretId(t *testing.T) {
@@ -25,25 +30,76 @@ func Test_buildSecretId(t *testing.T) {
 	}
 }
 
+// mockGCPClient is a local implementation of gcpSecretsClientAPI for testing.
+type mockGCPClient struct {
+	response *secretmanagerpb.AccessSecretVersionResponse
+	err      error
+}
+
+func (m *mockGCPClient) AccessSecretVersion(
+	_ context.Context,
+	_ *secretmanagerpb.AccessSecretVersionRequest,
+	_ ...gax.CallOption,
+) (*secretmanagerpb.AccessSecretVersionResponse, error) {
+	return m.response, m.err
+}
+
+func (m *mockGCPClient) Close() error { return nil }
+
 func Test_getSecret(t *testing.T) {
-	type args struct {
-		secretName string
-	}
+	t.Setenv("GOOGLE_APPLICATION_CREDENTIALS", "../../../../test/testdata/mock_gcp_creds.json")
+
 	tests := []struct {
-		name string
-		args args
-		want map[string]interface{}
+		name       string
+		client     gcpSecretsClientAPI
+		secretName string
+		want       map[string]interface{}
+		wantErr    bool
 	}{
-		// TODO: Add test cases.
+		{
+			name: "full secret ID returns secret value",
+			client: &mockGCPClient{
+				response: &secretmanagerpb.AccessSecretVersionResponse{
+					Payload: &secretmanagerpb.SecretPayload{
+						Data: []byte("my-secret-value"),
+					},
+				},
+			},
+			secretName: "projects/my-project/secrets/my-secret/versions/1",
+			want:       map[string]interface{}{"my-secret": "my-secret-value"},
+		},
+		{
+			name: "short secret name uses default credentials",
+			client: &mockGCPClient{
+				response: &secretmanagerpb.AccessSecretVersionResponse{
+					Payload: &secretmanagerpb.SecretPayload{
+						Data: []byte("short-name-value"),
+					},
+				},
+			},
+			secretName: "my-short-secret",
+			want:       map[string]interface{}{"my-short-secret": "short-name-value"},
+		},
+		{
+			name: "client error propagates",
+			client: &mockGCPClient{
+				err: errors.New("permission denied"),
+			},
+			secretName: "projects/my-project/secrets/my-secret/versions/1",
+			want:       nil,
+			wantErr:    true,
+		},
 	}
+
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got, _ := getSecret(context.TODO(), tt.args.secretName); !reflect.DeepEqual(
-				got,
-				tt.want,
-			) {
-				t.Errorf("getSecret() = %v, want %v", got, tt.want)
+			got, err := getSecret(context.Background(), tt.client, tt.secretName)
+			if tt.wantErr {
+				require.Error(t, err)
+			} else {
+				require.NoError(t, err)
 			}
+			assert.Equal(t, tt.want, got)
 		})
 	}
 }

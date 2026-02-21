@@ -13,6 +13,15 @@ import (
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
 
+// secretsManagerAPI is the subset of secretsmanager.Client used by this handler.
+type secretsManagerAPI interface {
+	GetSecretValue(
+		ctx context.Context,
+		input *secretsmanager.GetSecretValueInput,
+		optFns ...func(*secretsmanager.Options),
+	) (*secretsmanager.GetSecretValueOutput, error)
+}
+
 func createConfig() aws.Config {
 	cfg, err := config.LoadDefaultConfig(context.Background())
 	if err != nil {
@@ -24,7 +33,7 @@ func createConfig() aws.Config {
 // getSecret wil get the secret into a map[string]interface{} as the return value may vary
 func getSecret(
 	ctx context.Context,
-	svc *secretsmanager.Client,
+	svc secretsManagerAPI,
 	secretName string,
 ) (map[string]interface{}, error) {
 	r, err := svc.GetSecretValue(ctx, &secretsmanager.GetSecretValueInput{SecretId: &secretName})
@@ -41,7 +50,8 @@ func getSecret(
 }
 
 type SecretsManagerImp struct {
-	cfg aws.Config
+	cfg    aws.Config
+	client secretsManagerAPI
 }
 
 func New() interfaces.SecretsManager {
@@ -53,7 +63,10 @@ func (s *SecretsManagerImp) GetSecret(secretName string, timeout int) map[string
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
 
-	svc := secretsmanager.NewFromConfig(s.cfg)
+	svc := s.client
+	if svc == nil {
+		svc = secretsmanager.NewFromConfig(s.cfg)
+	}
 	secret, err := getSecret(ctx, svc, secretName)
 	if err != nil {
 		log.Errorf("failed to get secret: %v", err)

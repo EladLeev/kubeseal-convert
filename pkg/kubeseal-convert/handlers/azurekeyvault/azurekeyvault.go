@@ -7,11 +7,24 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	identity "github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	secrets "github.com/Azure/azure-sdk-for-go/sdk/keyvault/azsecrets"
 
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
+
+// azureSecretsClientAPI is the subset of secrets.Client used by this handler.
+type azureSecretsClientAPI interface {
+	NewListSecretsPager(
+		opts *secrets.ListSecretsOptions,
+	) *runtime.Pager[secrets.ListSecretsResponse]
+	GetSecret(
+		ctx context.Context,
+		name, version string,
+		opts *secrets.GetSecretOptions,
+	) (secrets.GetSecretResponse, error)
+}
 
 func createClient(vaultName string) (*secrets.Client, error) {
 	/*
@@ -39,7 +52,7 @@ func createClient(vaultName string) (*secrets.Client, error) {
 // retrieve secret by name with the client
 func getSecrets(
 	ctx context.Context,
-	client *secrets.Client,
+	client azureSecretsClientAPI,
 	vaultName string,
 ) (map[string]interface{}, error) {
 	mp := make(map[string]interface{})
@@ -75,21 +88,27 @@ func getSecrets(
 	return mp, nil
 }
 
-type AzureKeyVaultImp struct{}
+type AzureKeyVaultImp struct {
+	client azureSecretsClientAPI
+}
 
 func New() interfaces.AzureKeyVault {
 	return &AzureKeyVaultImp{}
 }
 
-func (*AzureKeyVaultImp) GetSecrets(vaultName string, timeout int) map[string]interface{} {
+func (a *AzureKeyVaultImp) GetSecrets(vaultName string, timeout int) map[string]interface{} {
 	log.Debugf("Getting secrets from vault %v", vaultName)
 	// Create a context with a timeout
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
 
-	cli, err := createClient(vaultName)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
+	cli := a.client
+	if cli == nil {
+		var err error
+		cli, err = createClient(vaultName)
+		if err != nil {
+			log.Fatalf("failed to create client: %v", err)
+		}
 	}
 
 	secret, err := getSecrets(ctx, cli, vaultName)
