@@ -10,10 +10,21 @@ import (
 
 	secretmanager "cloud.google.com/go/secretmanager/apiv1"
 	"cloud.google.com/go/secretmanager/apiv1/secretmanagerpb"
+	"github.com/googleapis/gax-go/v2"
 	"golang.org/x/oauth2/google"
 
 	"github.com/eladleev/kubeseal-convert/pkg/kubeseal-convert/interfaces"
 )
+
+// gcpSecretsClientAPI is the subset of secretmanager.Client used by this handler.
+type gcpSecretsClientAPI interface {
+	AccessSecretVersion(
+		ctx context.Context,
+		req *secretmanagerpb.AccessSecretVersionRequest,
+		opts ...gax.CallOption,
+	) (*secretmanagerpb.AccessSecretVersionResponse, error)
+	Close() error
+}
 
 var cleanSecretName string
 
@@ -43,18 +54,12 @@ func buildSecretId(ctx context.Context, secretName string) string {
 	return secretName
 }
 
-func getSecret(ctx context.Context, secretName string) (map[string]interface{}, error) {
+func getSecret(
+	ctx context.Context,
+	client gcpSecretsClientAPI,
+	secretName string,
+) (map[string]interface{}, error) {
 	mp := make(map[string]interface{})
-
-	client, err := secretmanager.NewClient(ctx)
-	log.Debugf("client: %v", client)
-	if err != nil {
-		return nil, fmt.Errorf("failed to setup client: %v", err)
-	}
-
-	defer func(client *secretmanager.Client) {
-		_ = client.Close()
-	}(client)
 
 	accessRequest := &secretmanagerpb.AccessSecretVersionRequest{
 		Name: buildSecretId(ctx, secretName),
@@ -71,17 +76,31 @@ func getSecret(ctx context.Context, secretName string) (map[string]interface{}, 
 	return mp, nil
 }
 
-type GcpSecretsManagerImp struct{}
+type GcpSecretsManagerImp struct {
+	client gcpSecretsClientAPI
+}
 
 func New() interfaces.SecretsManager {
 	return &GcpSecretsManagerImp{}
 }
 
-func (*GcpSecretsManagerImp) GetSecret(secretName string, timeout int) map[string]interface{} {
+func (g *GcpSecretsManagerImp) GetSecret(secretName string, timeout int) map[string]interface{} {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(timeout)*time.Second)
 	defer cancel()
 
-	secret, err := getSecret(ctx, secretName)
+	cli := g.client
+	if cli == nil {
+		var err error
+		cli, err = secretmanager.NewClient(ctx)
+		log.Debugf("client: %v", cli)
+		if err != nil {
+			log.Errorf("failed to setup client: %v", err)
+			return nil
+		}
+		defer func() { _ = cli.Close() }()
+	}
+
+	secret, err := getSecret(ctx, cli, secretName)
 	if err != nil {
 		log.Errorf("failed to get secret: %v", err)
 	}
