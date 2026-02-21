@@ -29,7 +29,9 @@ func checkKubesealBinary() string {
 
 // runCommandWithInput sets up and runs a command with the provided input, and returns the output.
 func runCommandWithInput(cmdPath string, cmdArgs []string, input string) (string, error) {
-	cmd := exec.Command(cmdPath, cmdArgs...)
+	cmd := exec.Command(
+		cmdPath,
+		cmdArgs...) // #nosec G204 -- cmdPath is always the resolved kubeseal binary path from exec.LookPath
 	log.Debugf("cmd: %v, cmdArgs: %v", cmd, cmdArgs)
 
 	var outputBuffer, errorBuffer bytes.Buffer

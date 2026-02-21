@@ -3,7 +3,30 @@
   "extends": [
     "config:base"
   ],
+  "schedule": ["every weekend"],
   "postUpdateOptions": [
     "gomodTidy"
+  ],
+  "packageRules": [
+    {
+      "description": "Group all Go minor and patch dependency updates into a single PR",
+      "matchManagers": ["gomod"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "Go dependencies",
+      "automerge": true
+    },
+    {
+      "description": "Do not automerge major Go dependency updates — require manual review",
+      "matchManagers": ["gomod"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    },
+    {
+      "description": "Group all GitHub Actions minor and patch updates",
+      "matchManagers": ["github-actions"],
+      "matchUpdateTypes": ["minor", "patch", "digest"],
+      "groupName": "GitHub Actions",
+      "automerge": true
+    }
   ]
 }
