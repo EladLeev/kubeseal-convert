@@ -11,6 +11,10 @@ formatters:
     - gofumpt
     - goimports
     - golines
+  settings:
+    golines:
+      max-len: 100
+      tab-len: 4
 
 linters:
   enable:
